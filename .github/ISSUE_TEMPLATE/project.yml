@@ -1,0 +1,62 @@
+name: Project Work
+description: Track a new project or major feature
+title: "[PROJECT] "
+labels: ["project"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Project Work Item
+        Use this template for tracking project work, features, or major initiatives.
+  
+  - type: input
+    id: title
+    attributes:
+      label: Project Title
+      description: Brief, descriptive title for the project
+      placeholder: e.g., "Implement user authentication system"
+    validations:
+      required: true
+  
+  - type: textarea
+    id: overview
+    attributes:
+      label: Overview
+      description: High-level description of the project
+      placeholder: Describe what this project aims to achieve
+    validations:
+      required: true
+  
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      description: List of tasks to complete
+      placeholder: |
+        - [ ] Task 1
+        - [ ] Task 2
+        - [ ] Task 3
+    validations:
+      required: false
+  
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What does "done" look like?
+      placeholder: List the criteria that must be met to consider this complete
+    validations:
+      required: false
+  
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: true

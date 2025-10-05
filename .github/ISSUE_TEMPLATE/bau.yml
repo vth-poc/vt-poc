@@ -1,0 +1,56 @@
+name: BAU Support
+description: Track business-as-usual or recurring support work
+title: "[BAU] "
+labels: ["bau", "support"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## BAU Support Work
+        Use this template for tracking routine maintenance, support, or BAU activities.
+  
+  - type: input
+    id: title
+    attributes:
+      label: Task Title
+      description: Brief description of the BAU work
+      placeholder: e.g., "Weekly database maintenance"
+    validations:
+      required: true
+  
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What needs to be done?
+      placeholder: Describe the BAU task or support activity
+    validations:
+      required: true
+  
+  - type: textarea
+    id: activities
+    attributes:
+      label: Activities
+      description: List of activities to perform
+      placeholder: |
+        - Activity 1
+        - Activity 2
+        - Activity 3
+    validations:
+      required: false
+  
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Frequency
+      description: How often does this occur?
+      options:
+        - One-time
+        - Daily
+        - Weekly
+        - Monthly
+        - Quarterly
+        - As needed
+    validations:
+      required: false

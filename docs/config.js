@@ -4,7 +4,7 @@
 const CONFIG = {
     // GitHub repository information
     // Format: "owner/repo" (e.g., "ISEngineering/eng.team.dashboard")
-    GITHUB_REPO: 'vth-poc/vt-poc', // Replace with your repo
+    GITHUB_REPO: 'https://github.com/vth-poc/vt-poc', // Replace with your repo
     
     // GitHub Personal Access Token (optional for public repos, required for private)
     // Create at: https://github.com/settings/tokens

@@ -43,15 +43,17 @@ jobs:
         run: |
           echo "Fetching issues from ${{ github.repository }}..."
           
-          # Fetch all issues using gh CLI
-          # --paginate returns newline-delimited JSON objects, so we use jq -s to combine them
+          # Fetch all issues using gh CLI and save to temp file
+          # gh api --paginate outputs each page as a separate JSON array
           gh api \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             --paginate \
             /repos/${{ github.repository }}/issues?state=all&per_page=100 \
-            | jq -s 'flatten' \
-            > docs/data/issues.json
+            > /tmp/issues_raw.json
+          
+          # Combine all pages into a single array using jq
+          cat /tmp/issues_raw.json | jq -s 'flatten' > docs/data/issues.json
           
           # Create timestamp file
           echo "Issues fetched at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > docs/data/last-update.txt

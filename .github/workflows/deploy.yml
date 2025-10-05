@@ -43,17 +43,13 @@ jobs:
         run: |
           echo "Fetching issues from ${{ github.repository }}..."
           
-          # Fetch all issues using gh CLI and save to temp file
-          # gh api --paginate outputs each page as a separate JSON array
+          # Fetch all issues without --paginate flag
+          # This returns a single JSON array directly
           gh api \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            --paginate \
-            /repos/${{ github.repository }}/issues?state=all&per_page=100 \
-            > /tmp/issues_raw.json
-          
-          # Combine all pages into a single array using jq
-          cat /tmp/issues_raw.json | jq -s 'flatten' > docs/data/issues.json
+            '/repos/${{ github.repository }}/issues?state=all&per_page=100' \
+            > docs/data/issues.json
           
           # Create timestamp file
           echo "Issues fetched at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > docs/data/last-update.txt
@@ -63,7 +59,7 @@ jobs:
           echo "✅ Fetched $ISSUE_COUNT issues successfully"
           
           # Debug: Show first issue title
-          jq -r '.[0].title // "No issues found"' docs/data/issues.json
+          jq -r 'if type == "array" then (.[0].title // "No issues found") else "ERROR: Not an array" end' docs/data/issues.json
       
       - name: Setup Pages
         uses: actions/configure-pages@v4

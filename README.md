@@ -23,54 +23,42 @@ The dashboard includes:
 
 ## Quick Start
 
-### 1. Configuration
+### 1. Enable GitHub Pages
 
-Edit `docs/config.js` and update the following:
+1. Go to your repository **Settings** → **Pages**
+2. Under "Build and deployment":
+   - Source: **GitHub Actions**
+3. Save
 
-```javascript
-const CONFIG = {
-    // Your GitHub repository (format: "owner/repo")
-    GITHUB_REPO: 'ISEngineering/eng.team.dashboard',
-    
-    // Optional: GitHub Personal Access Token
-    // Required for private repos or to increase rate limits
-    GITHUB_TOKEN: '', 
-    
-    // Customize work type labels to match your workflow
-    WORK_TYPES: {
-        'project': ['project', 'feature', 'epic'],
-        'bau': ['bau', 'support', 'maintenance'],
-        'bug': ['bug', 'defect'],
-        'enhancement': ['enhancement', 'improvement'],
-    },
-};
-```
+### 2. Run the Workflow
 
-### 2. Enable GitHub Pages
+The dashboard uses GitHub Actions to securely fetch issues every 30 minutes.
 
-1. Go to your repository settings on GitHub
-2. Navigate to **Pages** (under "Code and automation")
-3. Under "Source", select **Deploy from a branch**
-4. Select branch: `main` (or your default branch)
-5. Select folder: `/docs`
-6. Click **Save**
+For the first time:
+1. Go to **Actions** tab
+2. Select "Fetch Issues and Deploy Dashboard"
+3. Click **Run workflow**
+4. Wait 1-2 minutes
 
-Your dashboard will be available at: `https://[your-username].github.io/[repo-name]/`
+Your dashboard will be live at: `https://[your-org].github.io/[repo-name]/`
 
-### 3. GitHub Token (Optional but Recommended)
+### 3. Customize (Optional)
 
-For private repositories or to avoid rate limits:
+Edit `docs/config.js` to customize work type labels and colors to match your workflow.
 
-1. Go to https://github.com/settings/tokens
-2. Click "Generate new token" → "Generate new token (classic)"
-3. Give it a name (e.g., "Team Dashboard")
-4. Select scopes:
-   - `repo` (for private repositories)
-   - `public_repo` (for public repositories only)
-5. Click "Generate token"
-6. Copy the token and add it to `docs/config.js`
+**That's it!** No GitHub token needed in the browser - it's handled securely by GitHub Actions.
 
-**Security Note**: Never commit your token to a public repository! Consider using GitHub Actions secrets for production deployments.
+---
+
+## How It Works
+
+🔒 **Secure by Design:**
+- GitHub Actions fetches issues every 30 minutes using the built-in `GITHUB_TOKEN`
+- Data is saved as static JSON (`docs/data/issues.json`)
+- Dashboard reads from static file (no API calls, no exposed tokens!)
+- Works for both public and private repositories
+
+---
 
 ## Label Configuration
 

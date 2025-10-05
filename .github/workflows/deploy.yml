@@ -1,9 +1,13 @@
-name: Deploy Dashboard to GitHub Pages
+name: Fetch Issues and Deploy Dashboard
 
 on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+  
+  # Run every 30 minutes
+  schedule:
+    - cron: '*/30 * * * *'
   
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -20,8 +24,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Deployment job
-  deploy:
+  # Fetch issues and deploy
+  fetch-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -30,13 +34,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
+      - name: Create data directory
+        run: mkdir -p docs/data
+      
+      - name: Fetch all issues from GitHub API
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Fetching issues from ${{ github.repository }}..."
+          
+          # Fetch all issues (handles pagination automatically with gh CLI)
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            --paginate \
+            /repos/${{ github.repository }}/issues?state=all&per_page=100 \
+            > docs/data/issues.json
+          
+          # Create timestamp file
+          echo "Issues fetched at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > docs/data/last-update.txt
+          
+          # Show summary
+          ISSUE_COUNT=$(jq 'length' docs/data/issues.json)
+          echo "✅ Fetched $ISSUE_COUNT issues successfully"
+      
       - name: Setup Pages
         uses: actions/configure-pages@v4
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload docs directory
+          # Upload docs directory (includes data folder with issues.json)
           path: './docs'
       
       - name: Deploy to GitHub Pages

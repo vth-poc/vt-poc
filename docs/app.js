@@ -21,12 +21,6 @@ function setupEventListeners() {
 }
 
 async function initializeDashboard() {
-    // Validate configuration
-    if (!CONFIG.GITHUB_REPO || CONFIG.GITHUB_REPO === 'OWNER/REPO') {
-        showError('Please update the GITHUB_REPO in config.js with your repository information (format: "owner/repo").');
-        return;
-    }
-
     await loadDashboardData();
 }
 
@@ -34,7 +28,7 @@ async function loadDashboardData() {
     try {
         showLoading();
         
-        // Fetch all issues from GitHub
+        // Fetch issues from pre-fetched static data
         allIssues = await fetchAllIssues();
         
         // Process data
@@ -55,46 +49,22 @@ async function loadDashboardData() {
 }
 
 async function fetchAllIssues() {
-    const [owner, repo] = CONFIG.GITHUB_REPO.split('/');
-    const headers = {
-        'Accept': 'application/vnd.github.v3+json',
-    };
-    
-    if (CONFIG.GITHUB_TOKEN) {
-        headers['Authorization'] = `token ${CONFIG.GITHUB_TOKEN}`;
-    }
-    
-    let allIssues = [];
-    let page = 1;
-    
-    while (page <= CONFIG.MAX_PAGES) {
-        const url = `https://api.github.com/repos/${owner}/${repo}/issues?state=all&per_page=${CONFIG.ISSUES_PER_PAGE}&page=${page}`;
-        
-        const response = await fetch(url, { headers });
+    try {
+        // Fetch from pre-fetched static data (updated every 30 minutes by GitHub Actions)
+        const response = await fetch('data/issues.json');
         
         if (!response.ok) {
-            if (response.status === 404) {
-                throw new Error('Repository not found. Please check your GITHUB_REPO configuration.');
-            } else if (response.status === 401) {
-                throw new Error('Authentication failed. Please check your GITHUB_TOKEN.');
-            }
-            throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+            throw new Error('Could not load issues data. The GitHub Action may not have run yet. Please check the Actions tab or run the workflow manually.');
         }
         
         const issues = await response.json();
         
         // Filter out pull requests (they appear in the issues endpoint)
-        const actualIssues = issues.filter(issue => !issue.pull_request);
+        return issues.filter(issue => !issue.pull_request);
         
-        if (actualIssues.length === 0) break;
-        
-        allIssues = allIssues.concat(actualIssues);
-        
-        if (issues.length < CONFIG.ISSUES_PER_PAGE) break;
-        page++;
+    } catch (error) {
+        throw new Error(`Failed to load issues: ${error.message}`);
     }
-    
-    return allIssues;
 }
 
 function processTeamData() {
@@ -386,9 +356,17 @@ function getContrastColor(hexColor) {
 }
 
 function updateLastUpdated() {
-    const now = new Date();
-    document.getElementById('lastUpdated').textContent = 
-        `Last Updated: ${now.toLocaleString()}`;
+    // Try to get the last update time from the GitHub Actions workflow
+    fetch('data/last-update.txt')
+        .then(response => response.text())
+        .then(text => {
+            document.getElementById('lastUpdated').textContent = `Data: ${text.trim()}`;
+        })
+        .catch(() => {
+            // Fallback if the file doesn't exist yet
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = `Last Loaded: ${now.toLocaleString()}`;
+        });
 }
 
 function showLoading() {

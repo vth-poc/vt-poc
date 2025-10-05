@@ -1,18 +1,10 @@
 // Configuration file for the dashboard
-// Update these values to match your repository
+// Data is automatically fetched by GitHub Actions every 30 minutes
+// No GitHub token needed in the browser - keeps your credentials secure!
 
 const CONFIG = {
-    // GitHub repository information
-    // Format: "owner/repo" (e.g., "ISEngineering/eng.team.dashboard")
-    GITHUB_REPO: 'https://github.com/vth-poc/vt-poc', // Replace with your repo
-    
-    // GitHub Personal Access Token (optional for public repos, required for private)
-    // Create at: https://github.com/settings/tokens
-    // Scopes needed: repo (for private repos) or public_repo (for public repos)
-    GITHUB_TOKEN: '', // Leave empty for public repos or add your token
-    
     // Work type labels mapping
-    // Map GitHub labels to work categories
+    // Customize these to match your GitHub issue labels
     WORK_TYPES: {
         'project': ['project', 'feature', 'epic'],
         'bau': ['bau', 'support', 'maintenance'],
@@ -20,16 +12,12 @@ const CONFIG = {
         'enhancement': ['enhancement', 'improvement'],
     },
     
-    // Chart colors
+    // Chart colors (hex codes)
     COLORS: {
-        project: '#3b82f6',
-        bau: '#10b981',
-        bug: '#ef4444',
-        enhancement: '#f59e0b',
-        other: '#6b7280',
+        project: '#3b82f6',      // Blue
+        bau: '#10b981',          // Green
+        bug: '#ef4444',          // Red
+        enhancement: '#f59e0b',  // Orange
+        other: '#6b7280',        // Gray
     },
-    
-    // API settings
-    ISSUES_PER_PAGE: 100,
-    MAX_PAGES: 10, // Maximum number of pages to fetch
 };

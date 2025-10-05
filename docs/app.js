@@ -54,16 +54,40 @@ async function fetchAllIssues() {
         const response = await fetch('data/issues.json');
         
         if (!response.ok) {
-            throw new Error('Could not load issues data. The GitHub Action may not have run yet. Please check the Actions tab or run the workflow manually.');
+            if (response.status === 404) {
+                throw new Error('Data file not found. Please run the GitHub Actions workflow first:\n\n1. Go to the "Actions" tab\n2. Select "Fetch Issues and Deploy Dashboard"\n3. Click "Run workflow"\n4. Wait 1-2 minutes and refresh this page');
+            }
+            throw new Error(`Could not load issues data (HTTP ${response.status}). The GitHub Action may not have run yet.`);
         }
         
-        const issues = await response.json();
+        // Check if response has content
+        const text = await response.text();
+        if (!text || text.trim() === '') {
+            throw new Error('Data file is empty. Please run the GitHub Actions workflow:\n\n1. Go to the "Actions" tab\n2. Select "Fetch Issues and Deploy Dashboard"\n3. Click "Run workflow"\n4. Wait 1-2 minutes and refresh this page');
+        }
+        
+        // Parse JSON
+        let issues;
+        try {
+            issues = JSON.parse(text);
+        } catch (parseError) {
+            throw new Error('Data file is corrupted. Please re-run the GitHub Actions workflow.');
+        }
+        
+        // Validate that issues is an array
+        if (!Array.isArray(issues)) {
+            throw new Error('Invalid data format. Please re-run the GitHub Actions workflow.');
+        }
         
         // Filter out pull requests (they appear in the issues endpoint)
         return issues.filter(issue => !issue.pull_request);
         
     } catch (error) {
-        throw new Error(`Failed to load issues: ${error.message}`);
+        // Re-throw with better context
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+            throw new Error('Network error. Please check your internet connection and try again.');
+        }
+        throw error;
     }
 }
 
@@ -376,7 +400,12 @@ function showLoading() {
 
 function showError(message) {
     const modal = document.getElementById('errorModal');
-    document.getElementById('errorMessage').textContent = message;
+    const errorMessageDiv = document.getElementById('errorMessage');
+    
+    // Convert newlines to <br> tags for better formatting
+    const formattedMessage = message.replace(/\n/g, '<br>');
+    errorMessageDiv.innerHTML = formattedMessage;
+    
     modal.classList.add('show');
 }
 

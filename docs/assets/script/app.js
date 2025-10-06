@@ -20,7 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadConfiguration() {
     try {
-        const response = await fetch('config.toml');
+        // Add cache busting to ensure fresh config on refresh
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`config.toml?_=${cacheBuster}`, {
+            cache: 'no-store'
+        });
         const tomlText = await response.text();
         
         // Parse work types
@@ -121,8 +125,19 @@ function toggleTheme() {
 }
 
 function setupEventListeners() {
-    document.getElementById('refreshBtn').addEventListener('click', () => {
-        loadDashboardData();
+    document.getElementById('refreshBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('refreshBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-rotate fa-spin"></i> Refreshing...';
+        
+        try {
+            // Reload configuration to pick up any changes
+            await loadConfiguration();
+            await loadDashboardData();
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-rotate"></i> Refresh';
+        }
     });
     
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
@@ -153,7 +168,6 @@ async function loadDashboardData() {
         renderTeamMembers();
         renderIssues(allIssues);
         updateFilterOptions();
-        // updateLastUpdated();
         
     } catch (error) {
         console.error('Error loading dashboard data:', error);
@@ -163,8 +177,16 @@ async function loadDashboardData() {
 
 async function fetchAllIssues() {
     try {
-        // Fetch from pre-fetched static data (updated every 30 minutes by GitHub Actions)
-        const response = await fetch('data/issues.json');
+        // Fetch from pre-fetched static data with cache busting
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`data/issues.json?_=${cacheBuster}`, {
+            cache: 'no-store',  // Disable all caching
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        });
         
         if (!response.ok) {
             throw new Error('Could not load issues data. The GitHub Action may not have run yet. Please check the Actions tab or run the workflow manually.');
@@ -477,30 +499,9 @@ function getContrastColor(hexColor) {
     return luminance > 0.5 ? '#000000' : '#FFFFFF';
 }
 
-function updateLastUpdated() {
-    // Try to get the last update time from the GitHub Actions workflow
-    // Add cache busting to ensure fresh data
-    const cacheBuster = new Date().getTime();
-    fetch(`data/last-update.txt?_=${cacheBuster}`, {
-        cache: 'no-store'
-    })
-        .then(response => response.text())
-        .then(text => {
-            document.getElementById('lastUpdated').textContent = `Data: ${text.trim()}`;
-        })
-        .catch(() => {
-            // Fallback if the file doesn't exist yet
-            const now = new Date();
-            const aestTime = now.toLocaleString('en-AU', { timeZone: 'Australia/Sydney', 
-                year: 'numeric', month: '2-digit', day: '2-digit',
-                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-            document.getElementById('lastUpdated').textContent = `Data: ${aestTime}`;
-        });
-}
-
 function showLoading() {
     document.getElementById('teamMembersContainer').innerHTML = '<p class="loading">Loading team data...</p>';
-    document.getElementById('issuesContainer').innerHTML = '<p class="loading">Loading issues...</p>';
+    document.getElementById('issuesContainer').innerHTML = '<p class="loading">Loading work items...</p>';
 }
 
 function showError(message) {

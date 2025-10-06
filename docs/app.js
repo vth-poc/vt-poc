@@ -438,7 +438,7 @@ function updateLastUpdated() {
     })
         .then(response => response.text())
         .then(text => {
-            document.getElementById('lastUpdated').textContent = `Data: ${text.trim()}`;
+            document.getElementById('lastUpdated').textContent = `Data Refreshed: ${text.trim()}`;
         })
         .catch(() => {
             // Fallback if the file doesn't exist yet
@@ -446,7 +446,7 @@ function updateLastUpdated() {
             const aestTime = now.toLocaleString('en-AU', { timeZone: 'Australia/Sydney', 
                 year: 'numeric', month: '2-digit', day: '2-digit',
                 hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-            document.getElementById('lastUpdated').textContent = `Last Loaded: ${aestTime} AEST`;
+            document.getElementById('lastUpdated').textContent = `Data Refreshed: ${aestTime}`;
         });
 }
 

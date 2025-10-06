@@ -108,7 +108,7 @@ async function loadDashboardData() {
         renderTeamMembers();
         renderIssues(allIssues);
         updateFilterOptions();
-        updateLastUpdated();
+        // updateLastUpdated();
         
     } catch (error) {
         console.error('Error loading dashboard data:', error);

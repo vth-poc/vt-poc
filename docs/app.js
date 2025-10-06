@@ -279,7 +279,7 @@ function renderTeamMembers() {
                     ${member.avatar ? `<img src="${member.avatar}" alt="${member.name}" class="team-member-avatar">` : ''}
                     <div class="team-member-info">
                         <h3>${member.name}</h3>
-                        <p>${openIssues} open, ${closedIssues} closed issues</p>
+                        <p>${openIssues} open, ${closedIssues} closed work items</p>
                     </div>
                 </div>
                 <div class="work-breakdown">

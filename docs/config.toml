@@ -1,0 +1,23 @@
+# Team Dashboard Configuration
+
+# Work Type Labels Mapping
+# Customize these to match your GitHub issue labels
+[work-types]
+project = ["project", "feature", "epic"]
+bau = ["bau", "support", "maintenance"]
+bug = ["bug", "defect"]
+enhancement = ["enhancement", "improvement"]
+
+# Chart Colors (hex codes without #)
+[colors]
+project = "3b82f6"      # Blue
+bau = "10b981"          # Green
+bug = "ef4444"          # Red
+enhancement = "f59e0b"  # Orange
+other = "6b7280"        # Gray
+
+# Team Members
+# Map GitHub usernames to preferred display names
+[[member]]
+git-name = "vthai-wtg"
+preferred-name = "Vinh"

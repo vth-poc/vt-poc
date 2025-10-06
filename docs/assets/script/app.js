@@ -5,6 +5,12 @@ let workTypeChart = null;
 let teamCapacityChart = null;
 let nameMapping = {}; // Maps git-name to preferred-name
 
+// Configuration loaded from config.toml
+const CONFIG = {
+    WORK_TYPES: {},
+    COLORS: {}
+};
+
 // Initialize the dashboard
 document.addEventListener('DOMContentLoaded', () => {
     initializeTheme();
@@ -12,14 +18,39 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
 });
 
-async function loadNameMapping() {
+async function loadConfiguration() {
     try {
-        const response = await fetch('options.toml');
+        const response = await fetch('config.toml');
         const tomlText = await response.text();
         
-        // Simple TOML parser for our specific format
-        const memberBlocks = tomlText.split('[[member]]').filter(block => block.trim());
+        // Parse work types
+        const workTypesSection = tomlText.match(/\[work-types\]([\s\S]*?)(?=\n\[|$)/);
+        if (workTypesSection) {
+            const lines = workTypesSection[1].trim().split('\n');
+            lines.forEach(line => {
+                const match = line.match(/(\w+)\s*=\s*\[(.*?)\]/);
+                if (match) {
+                    const [, key, values] = match;
+                    CONFIG.WORK_TYPES[key] = values.split(',').map(v => v.trim().replace(/"/g, ''));
+                }
+            });
+        }
         
+        // Parse colors
+        const colorsSection = tomlText.match(/\[colors\]([\s\S]*?)(?=\n\[|$)/);
+        if (colorsSection) {
+            const lines = colorsSection[1].trim().split('\n');
+            lines.forEach(line => {
+                const match = line.match(/(\w+)\s*=\s*"([^"]+)"/);
+                if (match) {
+                    const [, key, value] = match;
+                    CONFIG.COLORS[key] = '#' + value;
+                }
+            });
+        }
+        
+        // Parse member mappings
+        const memberBlocks = tomlText.split('[[member]]').filter(block => block.trim());
         memberBlocks.forEach(block => {
             const gitNameMatch = block.match(/git-name\s*=\s*"([^"]+)"/);
             const preferredNameMatch = block.match(/preferred-name\s*=\s*"([^"]+)"/);
@@ -29,9 +60,23 @@ async function loadNameMapping() {
             }
         });
         
-        console.log('Name mapping loaded:', nameMapping);
+        console.log('Configuration loaded:', { CONFIG, nameMapping });
     } catch (error) {
-        console.warn('Could not load options.toml, using GitHub usernames:', error);
+        console.error('Could not load config.toml, using defaults:', error);
+        // Set defaults if loading fails
+        CONFIG.WORK_TYPES = {
+            'project': ['project', 'feature', 'epic'],
+            'bau': ['bau', 'support', 'maintenance'],
+            'bug': ['bug', 'defect'],
+            'enhancement': ['enhancement', 'improvement'],
+        };
+        CONFIG.COLORS = {
+            project: '#3b82f6',
+            bau: '#10b981',
+            bug: '#ef4444',
+            enhancement: '#f59e0b',
+            other: '#6b7280',
+        };
     }
 }
 
@@ -88,7 +133,7 @@ function setupEventListeners() {
 }
 
 async function initializeDashboard() {
-    await loadNameMapping();
+    await loadConfiguration();
     await loadDashboardData();
 }
 

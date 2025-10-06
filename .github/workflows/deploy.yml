@@ -54,7 +54,7 @@ jobs:
           
           # Create timestamp file in AEST (UTC+10 for AEDT, UTC+11 for AEST)
           # Using TZ environment variable to set timezone
-          echo "Issues fetched at $(TZ='Australia/Sydney' date '+%Y-%m-%d %H:%M:%S %Z')" > docs/data/last-update.txt
+          echo "Fetched at $(TZ='Australia/Sydney' date '+%Y-%m-%d %H:%M:%S')" > docs/data/last-update.txt
           
           # Show summary
           ISSUE_COUNT=$(jq 'length' docs/data/issues.json || echo "0")

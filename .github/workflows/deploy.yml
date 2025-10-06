@@ -51,8 +51,9 @@ jobs:
             '/repos/${{ github.repository }}/issues?state=all&per_page=100' \
             > docs/data/issues.json
           
-          # Create timestamp file
-          echo "Issues fetched at $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > docs/data/last-update.txt
+          # Create timestamp file in AEST (UTC+10 for AEDT, UTC+11 for AEST)
+          # Using TZ environment variable to set timezone
+          echo "Issues fetched at $(TZ='Australia/Sydney' date '+%Y-%m-%d %H:%M:%S %Z')" > docs/data/last-update.txt
           
           # Show summary
           ISSUE_COUNT=$(jq 'length' docs/data/issues.json || echo "0")

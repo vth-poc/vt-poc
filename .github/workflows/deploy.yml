@@ -19,10 +19,10 @@ permissions:
   id-token: write
   issues: read
 
-# Allow only one concurrent deployment
+# Allow only one concurrent deployment, cancel in-progress runs in favor of latest
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "pages-deployment"
+  cancel-in-progress: true
 
 jobs:
   # Fetch issues and deploy

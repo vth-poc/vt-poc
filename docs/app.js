@@ -357,7 +357,11 @@ function getContrastColor(hexColor) {
 
 function updateLastUpdated() {
     // Try to get the last update time from the GitHub Actions workflow
-    fetch('data/last-update.txt')
+    // Add cache busting to ensure fresh data
+    const cacheBuster = new Date().getTime();
+    fetch(`data/last-update.txt?_=${cacheBuster}`, {
+        cache: 'no-store'
+    })
         .then(response => response.text())
         .then(text => {
             document.getElementById('lastUpdated').textContent = `Data: ${text.trim()}`;

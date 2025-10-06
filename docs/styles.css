@@ -17,6 +17,68 @@
     --border-color: #e2e8f0;
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    
+    /* Badge colors - light theme */
+    --badge-project-bg: #dbeafe;
+    --badge-project-text: #1e40af;
+    --badge-bau-bg: #d1fae5;
+    --badge-bau-text: #065f46;
+    --badge-bug-bg: #fee2e2;
+    --badge-bug-text: #991b1b;
+    --badge-enhancement-bg: #fef3c7;
+    --badge-enhancement-text: #92400e;
+    --badge-other-bg: #e5e7eb;
+    --badge-other-text: #374151;
+    
+    /* Issue state colors */
+    --issue-open-bg: #dcfce7;
+    --issue-open-text: #166534;
+    --issue-closed-bg: #f3f4f6;
+    --issue-closed-text: #4b5563;
+    
+    /* Error colors */
+    --error-bg: #fef2f2;
+    --error-border: #fecaca;
+    --error-text: #991b1b;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+    --primary-color: #3b82f6;
+    --secondary-color: #60a5fa;
+    --success-color: #34d399;
+    --warning-color: #fbbf24;
+    --danger-color: #f87171;
+    --background: #0f172a;
+    --surface: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    
+    /* Badge colors - dark theme */
+    --badge-project-bg: #1e3a8a;
+    --badge-project-text: #bfdbfe;
+    --badge-bau-bg: #064e3b;
+    --badge-bau-text: #a7f3d0;
+    --badge-bug-bg: #7f1d1d;
+    --badge-bug-text: #fecaca;
+    --badge-enhancement-bg: #78350f;
+    --badge-enhancement-text: #fde68a;
+    --badge-other-bg: #374151;
+    --badge-other-text: #d1d5db;
+    
+    /* Issue state colors */
+    --issue-open-bg: #064e3b;
+    --issue-open-text: #a7f3d0;
+    --issue-closed-bg: #374151;
+    --issue-closed-text: #d1d5db;
+    
+    /* Error colors */
+    --error-bg: #7f1d1d;
+    --error-border: #991b1b;
+    --error-text: #fecaca;
 }
 
 body {
@@ -24,6 +86,7 @@ body {
     background: var(--background);
     color: var(--text-primary);
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -72,6 +135,25 @@ header h1 {
 
 .refresh-btn:hover {
     background: var(--secondary-color);
+}
+
+.theme-toggle {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.theme-toggle:hover {
+    background: var(--background);
+    transform: scale(1.05);
 }
 
 .summary-cards {
@@ -186,28 +268,28 @@ header h1 {
 }
 
 .work-badge.project {
-    background: #dbeafe;
-    color: #1e40af;
+    background: var(--badge-project-bg);
+    color: var(--badge-project-text);
 }
 
 .work-badge.bau {
-    background: #d1fae5;
-    color: #065f46;
+    background: var(--badge-bau-bg);
+    color: var(--badge-bau-text);
 }
 
 .work-badge.bug {
-    background: #fee2e2;
-    color: #991b1b;
+    background: var(--badge-bug-bg);
+    color: var(--badge-bug-text);
 }
 
 .work-badge.enhancement {
-    background: #fef3c7;
-    color: #92400e;
+    background: var(--badge-enhancement-bg);
+    color: var(--badge-enhancement-text);
 }
 
 .work-badge.other {
-    background: #e5e7eb;
-    color: #374151;
+    background: var(--badge-other-bg);
+    color: var(--badge-other-text);
 }
 
 .filter-controls {
@@ -313,13 +395,13 @@ header h1 {
 }
 
 .issue-state.open {
-    background: #dcfce7;
-    color: #166534;
+    background: var(--issue-open-bg);
+    color: var(--issue-open-text);
 }
 
 .issue-state.closed {
-    background: #f3f4f6;
-    color: #4b5563;
+    background: var(--issue-closed-bg);
+    color: var(--issue-closed-text);
 }
 
 .loading {
@@ -329,9 +411,9 @@ header h1 {
 }
 
 .error {
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    color: #991b1b;
+    background: var(--error-bg);
+    border: 1px solid var(--error-border);
+    color: var(--error-text);
     padding: 1rem;
     border-radius: 8px;
     margin: 1rem 0;

@@ -6,14 +6,56 @@ let teamCapacityChart = null;
 
 // Initialize the dashboard
 document.addEventListener('DOMContentLoaded', () => {
+    initializeTheme();
     initializeDashboard();
     setupEventListeners();
 });
+
+function initializeTheme() {
+    // Check for saved theme preference or default to system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    
+    setTheme(theme);
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            setTheme(e.matches ? 'dark' : 'light');
+        }
+    });
+}
+
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    
+    // Update theme toggle button
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+    
+    if (theme === 'dark') {
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Light';
+    } else {
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Dark';
+    }
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+}
 
 function setupEventListeners() {
     document.getElementById('refreshBtn').addEventListener('click', () => {
         loadDashboardData();
     });
+    
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
     document.getElementById('filterAssignee').addEventListener('change', filterIssues);
     document.getElementById('filterLabel').addEventListener('change', filterIssues);

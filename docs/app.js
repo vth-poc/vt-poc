@@ -3,6 +3,7 @@ let allIssues = [];
 let teamData = {};
 let workTypeChart = null;
 let teamCapacityChart = null;
+let nameMapping = {}; // Maps git-name to preferred-name
 
 // Initialize the dashboard
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,6 +11,33 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeDashboard();
     setupEventListeners();
 });
+
+async function loadNameMapping() {
+    try {
+        const response = await fetch('options.toml');
+        const tomlText = await response.text();
+        
+        // Simple TOML parser for our specific format
+        const memberBlocks = tomlText.split('[[member]]').filter(block => block.trim());
+        
+        memberBlocks.forEach(block => {
+            const gitNameMatch = block.match(/git-name\s*=\s*"([^"]+)"/);
+            const preferredNameMatch = block.match(/preferred-name\s*=\s*"([^"]+)"/);
+            
+            if (gitNameMatch && preferredNameMatch) {
+                nameMapping[gitNameMatch[1]] = preferredNameMatch[1];
+            }
+        });
+        
+        console.log('Name mapping loaded:', nameMapping);
+    } catch (error) {
+        console.warn('Could not load options.toml, using GitHub usernames:', error);
+    }
+}
+
+function getDisplayName(gitLogin) {
+    return nameMapping[gitLogin] || gitLogin;
+}
 
 function initializeTheme() {
     // Check for saved theme preference or default to system preference
@@ -60,6 +88,7 @@ function setupEventListeners() {
 }
 
 async function initializeDashboard() {
+    await loadNameMapping();
     await loadDashboardData();
 }
 
@@ -110,12 +139,14 @@ function processTeamData() {
     teamData = {};
     
     allIssues.forEach(issue => {
-        // Get assignee
+        // Get assignee (use git login as key)
         const assignee = issue.assignee ? issue.assignee.login : 'Unassigned';
+        const displayName = assignee !== 'Unassigned' ? getDisplayName(assignee) : 'Unassigned';
         
         if (!teamData[assignee]) {
             teamData[assignee] = {
-                name: assignee,
+                name: displayName,  // Use preferred name for display
+                gitLogin: assignee,  // Keep git login for reference
                 avatar: issue.assignee ? issue.assignee.avatar_url : null,
                 issues: [],
                 workBreakdown: {
@@ -306,7 +337,8 @@ function renderIssues(issues) {
     
     container.innerHTML = issues.map(issue => {
         const workType = categorizeIssue(issue);
-        const assigneeName = issue.assignee ? issue.assignee.login : 'Unassigned';
+        const assigneeLogin = issue.assignee ? issue.assignee.login : 'Unassigned';
+        const assigneeName = assigneeLogin !== 'Unassigned' ? getDisplayName(assigneeLogin) : 'Unassigned';
         
         return `
             <div class="issue-item" style="border-left-color: ${CONFIG.COLORS[workType]}">
@@ -340,12 +372,15 @@ function renderIssues(issues) {
 }
 
 function updateFilterOptions() {
-    // Update assignee filter
+    // Update assignee filter with preferred names
     const assigneeFilter = document.getElementById('filterAssignee');
     const assignees = [...new Set(allIssues.map(i => i.assignee ? i.assignee.login : 'Unassigned'))];
     
     assigneeFilter.innerHTML = '<option value="">All Team Members</option>' +
-        assignees.map(assignee => `<option value="${assignee}">${assignee}</option>`).join('');
+        assignees.map(assigneeLogin => {
+            const displayName = assigneeLogin !== 'Unassigned' ? getDisplayName(assigneeLogin) : 'Unassigned';
+            return `<option value="${assigneeLogin}">${displayName}</option>`;
+        }).join('');
     
     // Update label filter
     const labelFilter = document.getElementById('filterLabel');

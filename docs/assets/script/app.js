@@ -314,7 +314,6 @@ function updateWorkTypeChart() {
 }
 
 function updateTeamCapacityChart() {
-    const openIssues = allIssues.filter(i => i.state === 'open');
     const teamMembers = Object.keys(teamData).filter(m => m !== 'Unassigned');
     const issueCounts = teamMembers.map(member => 
         teamData[member].issues.filter(i => i.state === 'open').length

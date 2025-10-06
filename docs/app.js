@@ -253,6 +253,9 @@ function updateTeamCapacityChart() {
         teamData[member].issues.filter(i => i.state === 'open').length
     );
     
+    // Map team members to their preferred names for display
+    const displayNames = teamMembers.map(member => teamData[member].name);
+    
     const ctx = document.getElementById('teamCapacityChart').getContext('2d');
     
     if (teamCapacityChart) {
@@ -262,7 +265,7 @@ function updateTeamCapacityChart() {
     teamCapacityChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: teamMembers,
+            labels: displayNames,  // Use preferred names instead of git logins
             datasets: [{
                 label: 'Open Issues',
                 data: issueCounts,

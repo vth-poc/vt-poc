@@ -33,14 +33,11 @@ function setTheme(theme) {
     
     // Update theme toggle button
     const themeIcon = document.getElementById('themeIcon');
-    const themeText = document.getElementById('themeText');
     
     if (theme === 'dark') {
         themeIcon.textContent = '☀️';
-        themeText.textContent = 'Light';
     } else {
         themeIcon.textContent = '🌙';
-        themeText.textContent = 'Dark';
     }
 }
 

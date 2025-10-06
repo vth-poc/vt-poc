@@ -31,13 +31,13 @@ function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
     
-    // Update theme toggle button
+    // Update theme toggle button with Font Awesome icons
     const themeIcon = document.getElementById('themeIcon');
     
     if (theme === 'dark') {
-        themeIcon.textContent = '☀️';
+        themeIcon.className = 'fa-solid fa-sun';
     } else {
-        themeIcon.textContent = '🌙';
+        themeIcon.className = 'fa-solid fa-moon';
     }
 }
 

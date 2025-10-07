@@ -65,7 +65,7 @@ jobs:
             fi
             
             # Check if we have data
-            if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "[]" ]; then
+            if [ -z "$RESPONSE" ] || [ "$RESPONSE" = '[]' ]; then
               echo "✅ No more issues to fetch."
               break
             fi
@@ -92,8 +92,6 @@ jobs:
           rm -rf "$TEMP_ALL_ISSUES_FILE" "$TEMP_MERGED_ISSUES_FILE"
 
           # Show summary
-          ISSUE_COUNT=$(jq 'length' docs/data/issues.json || echo "0")
-          echo "✅ Fetched $ISSUE_COUNT issues successfully"
           echo "🎉 Successfully saved $(jq length "$OUTPUT_FILE") issues to $OUTPUT_FILE"    
       
       - name: Setup Pages

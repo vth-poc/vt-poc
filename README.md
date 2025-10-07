@@ -5,12 +5,14 @@ A beautiful, real-time dashboard for visualizing team capacity and work distribu
 ## 🌟 Features
 
 - **Real-time Updates**: Automatically refreshes when issues are created, edited, or closed
+- **Date Filtering**: Filter issues by last updated date to focus on recent work
 - **Team Capacity Visualization**: See at-a-glance who's working on what
-- **Work Type Distribution**: Visualize projects vs BAU vs bugs vs enhancements
+- **Work Type Distribution**: Visualize projects vs BAU vs bugs vs enhancements vs admin tasks
 - **Name Mapping**: Map GitHub usernames to preferred display names
 - **Dark/Light Theme**: Toggle between themes with automatic system preference detection
 - **Manual Refresh**: Force data reload with cache-busting
 - **Filterable Issue List**: Filter by assignee, label, or state
+- **Rich Issue Templates**: Pre-configured templates for projects, BAU, bugs, enhancements, and admin tasks
 
 ## 🚀 Quick Start
 
@@ -26,7 +28,16 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
    - Branch: `main` → `/docs` folder
    - Save
 
-2. **Configure Team Members** (optional):
+2. **Configure Issue Date Filter** (optional but recommended):
+   Edit `docs/config.toml` to set the date range for fetching issues:
+
+   ```toml
+   [issues-api]
+   # Only show issues updated after this date (ISO 8601 format)
+   since = "2025-07-01T00:00:00Z"
+   ```
+
+3. **Configure Team Members** (optional):
    Edit `docs/config.toml` to map GitHub usernames to preferred names:
 
    ```toml
@@ -35,7 +46,7 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
    preferred-name = "Display Name"
    ```
 
-3. **Customize Work Types** (optional):
+4. **Customize Work Types** (optional):
    Edit `docs/config.toml` to define work categories and colors:
 
    ```toml
@@ -46,21 +57,24 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
    enhancement = ["enhancement", "improvement"]
 
    [colors]
-   project = "#3b82f6"
-   bau = "#10b981"
-   bug = "#ef4444"
-   enhancement = "#f59e0b"
-   other = "#6b7280"
+   project = "3b82f6"      # Blue (hex without #)
+   bau = "10b981"          # Green
+   bug = "ef4444"          # Red
+   enhancement = "f59e0b"  # Orange
+   other = "6b7280"        # Gray
    ```
 
-4. **Create Issues**: Use GitHub Issues with appropriate labels to track work items
+5. **Create Issues**: Use GitHub Issues with provided templates to track work items
 
 ## 🔄 How It Works
 
 1. **GitHub Actions Workflow** (`.github/workflows/deploy.yml`):
    - Triggers on issue events (opened, edited, closed, labeled, etc.)
-   - Fetches all issues via GitHub API
+   - Reads date filter from `config.toml` under `[issues-api]` section
+   - Fetches issues via GitHub API with `since` parameter for date filtering
+   - Paginates through all results (100 issues per page)
    - Saves to `docs/data/issues.json`
+   - Generates deployment summary with issue counts and filter date
    - Deploys to GitHub Pages
 
 2. **Dashboard** (`docs/index.html` + `docs/assets/script/app.js`):
@@ -104,11 +118,13 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
 
 ## 📝 Issue Templates
 
-The repository includes issue templates for:
+The repository includes comprehensive issue templates for:
 
-- **Project**: Major features or initiatives
-- **BAU**: Business-as-usual support work
-- **Bug**: Defects and issues
+- **Project Work**: Major features or initiatives with tasks and acceptance criteria
+- **BAU Support**: Business-as-usual and recurring support work with frequency tracking
+- **Bug Report**: Defects and issues with reproduction steps and severity levels
+- **Enhancement**: POCs, new features, tech debt removal, and performance improvements
+- **Admin Task**: E-learning, housekeeping, and documentation updates
 
 ## 🎨 Theming
 
@@ -123,6 +139,11 @@ The dashboard supports both light and dark themes:
 `docs/config.toml` contains all dashboard configuration:
 
 ```toml
+# Issue API Settings
+[issues-api]
+# Only show issues updated after this date (ISO 8601 format)
+since = "2025-07-01T00:00:00Z"
+
 # Work type mappings
 [work-types]
 project = ["project", "feature", "epic"]
@@ -130,13 +151,13 @@ bau = ["bau", "support", "maintenance"]
 bug = ["bug", "defect"]
 enhancement = ["enhancement", "improvement"]
 
-# Color scheme
+# Color scheme (hex codes without #)
 [colors]
-project = "#3b82f6"  # Blue
-bau = "#10b981"      # Green
-bug = "#ef4444"      # Red
-enhancement = "#f59e0b"  # Orange
-other = "#6b7280"    # Gray
+project = "3b82f6"      # Blue
+bau = "10b981"          # Green
+bug = "ef4444"          # Red
+enhancement = "f59e0b"  # Orange
+other = "6b7280"        # Gray
 
 # Team member name mappings
 [[member]]
@@ -159,7 +180,12 @@ Deployment typically takes 30-60 seconds.
 ```text
 .
 ├── .github/
-│   ├── ISSUE_TEMPLATE/       # Issue templates
+│   ├── ISSUE_TEMPLATE/       # Issue templates (5 types)
+│   │   ├── project.yml      # Project work
+│   │   ├── bau.yml          # BAU support
+│   │   ├── bug.yml          # Bug reports
+│   │   ├── enhancement.yml  # Enhancements/POCs
+│   │   └── task.yml         # Admin tasks
 │   └── workflows/
 │       └── deploy.yml        # Deployment workflow
 ├── docs/                     # GitHub Pages root

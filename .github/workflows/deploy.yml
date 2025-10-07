@@ -39,6 +39,7 @@ jobs:
         run: mkdir -p docs/data
       
       - name: Fetch all issues from GitHub API
+        id: fetch-issues
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -92,7 +93,32 @@ jobs:
           rm -rf "$TEMP_ALL_ISSUES_FILE" "$TEMP_MERGED_ISSUES_FILE"
 
           # Show summary
-          echo "🎉 Successfully saved $(jq length "$OUTPUT_FILE") issues to $OUTPUT_FILE"    
+          TOTAL_ISSUES=$(jq length "$OUTPUT_FILE")
+          OPEN_ISSUES=$(jq '[.[] | select(.state == "open")] | length' "$OUTPUT_FILE")
+          CLOSED_ISSUES=$(jq '[.[] | select(.state == "closed")] | length' "$OUTPUT_FILE")
+          
+          echo "🎉 Successfully saved $TOTAL_ISSUES issues to $OUTPUT_FILE"
+          echo "📊 Open: $OPEN_ISSUES | Closed: $CLOSED_ISSUES"
+          
+          # Set outputs for summary
+          echo "total_issues=$TOTAL_ISSUES" >> $GITHUB_OUTPUT
+          echo "open_issues=$OPEN_ISSUES" >> $GITHUB_OUTPUT
+          echo "closed_issues=$CLOSED_ISSUES" >> $GITHUB_OUTPUT
+      
+      - name: Generate Workflow Summary
+        run: |
+          echo "## 📊 Dashboard Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Issues Fetched" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total Issues:** ${{ steps.fetch-issues.outputs.total_issues }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Open Issues:** ${{ steps.fetch-issues.outputs.open_issues }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Closed Issues:** ${{ steps.fetch-issues.outputs.closed_issues }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Deployment Status" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Dashboard successfully deployed to GitHub Pages" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Repository:** \`${{ github.repository }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
       
       - name: Setup Pages
         uses: actions/configure-pages@v4

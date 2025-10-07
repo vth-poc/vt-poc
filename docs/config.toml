@@ -1,5 +1,9 @@
 # Team Dashboard Configuration
 
+[issues-api]
+# Only show results that were last updated after the given time. 
+since = "2025-07-01T00:00:00Z"  # ISO 8601 format
+
 # Work Type Labels Mapping
 # Customize these to match your GitHub issue labels
 [work-types]

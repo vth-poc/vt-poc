@@ -45,6 +45,10 @@ jobs:
         run: |
           echo "Fetching issues from ${{ github.repository }}..."
 
+          # Extract 'since' date from config.toml
+          SINCE_DATE=$(grep -A 1 '\[issues-api\]' docs/config.toml | grep 'since' | sed 's/.*"\(.*\)".*/\1/')
+          echo "📅 Using since date: $SINCE_DATE"
+
           PAGE=1
           TEMP_ALL_ISSUES_FILE="temp_all_issues.json"
           TEMP_MERGED_ISSUES_FILE="temp_merged_issues.json"
@@ -56,11 +60,11 @@ jobs:
           while true; do
             echo "📄 Processing page $PAGE..."
             
-            # Make API request
+            # Make API request with 'since' parameter
             if ! RESPONSE=$(gh api \
               -H "Accept: application/vnd.github+json" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
-              "/repos/${{ github.repository }}/issues?state=all&per_page=100&page=$PAGE&sort=created&direction=asc" 2>/dev/null); then
+              "/repos/${{ github.repository }}/issues?state=all&per_page=100&page=$PAGE&sort=updated&direction=desc&since=$SINCE_DATE" 2>/dev/null); then
               echo "❌ Failed to fetch page $PAGE"
               break
             fi
@@ -99,11 +103,13 @@ jobs:
           
           echo "🎉 Successfully saved $TOTAL_ISSUES issues to $OUTPUT_FILE"
           echo "📊 Open: $OPEN_ISSUES | Closed: $CLOSED_ISSUES"
+          echo "📅 Filtered since: $SINCE_DATE"
           
           # Set outputs for summary
           echo "total_issues=$TOTAL_ISSUES" >> $GITHUB_OUTPUT
           echo "open_issues=$OPEN_ISSUES" >> $GITHUB_OUTPUT
           echo "closed_issues=$CLOSED_ISSUES" >> $GITHUB_OUTPUT
+          echo "since_date=$SINCE_DATE" >> $GITHUB_OUTPUT
       
       - name: Generate Workflow Summary
         run: |
@@ -113,6 +119,7 @@ jobs:
           echo "- **Total Issues:** ${{ steps.fetch-issues.outputs.total_issues }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Open Issues:** ${{ steps.fetch-issues.outputs.open_issues }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Closed Issues:** ${{ steps.fetch-issues.outputs.closed_issues }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Since Date:** ${{ steps.fetch-issues.outputs.since_date }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Deployment Status" >> $GITHUB_STEP_SUMMARY
           echo "✅ Dashboard successfully deployed to GitHub Pages" >> $GITHUB_STEP_SUMMARY

@@ -333,7 +333,7 @@ function updateTeamCapacityChart() {
         data: {
             labels: displayNames,  // Use preferred names instead of git logins
             datasets: [{
-                label: 'Open Issues',
+                label: 'Open Work Items',
                 data: issueCounts,
                 backgroundColor: CONFIG.COLORS.project,
                 borderRadius: 6,

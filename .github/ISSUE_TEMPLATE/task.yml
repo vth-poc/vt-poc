@@ -1,0 +1,76 @@
+name: Admin Task
+description: Track administrative tasks including e-learning, housekeeping, and documentation updates
+title: "[ADMIN] "
+labels: ["admin", "housekeeping"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Administrative Task
+        Use this template for tracking administrative tasks such as mandatory e-learning modules, general housekeeping, or documentation updates.
+  
+  - type: dropdown
+    id: task-type
+    attributes:
+      label: Task Type
+      description: What type of administrative task is this?
+      options:
+        - E-Learning Module
+        - General Housekeeping
+        - Documentation Update/Tidy
+        - Other Administrative Task
+    validations:
+      required: true
+  
+  - type: input
+    id: title
+    attributes:
+      label: Task Title
+      description: Brief description of the admin task
+      placeholder: e.g., "Complete Cyber Security Awareness Training" or "Close stale issues from Q3"
+    validations:
+      required: true
+  
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide details about this administrative task
+      placeholder: Describe what needs to be done and why
+    validations:
+      required: true
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Task Checklist
+      description: List the steps needed to complete this task
+      placeholder: |
+        - [ ] Step 1
+        - [ ] Step 2
+        - [ ] Step 3
+    validations:
+      required: false
+  
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: What is the priority level?
+      options:
+        - Low
+        - Medium
+        - High
+        - Urgent
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: Additional Notes
+      description: Any additional context, links, or information
+      placeholder: Add any relevant links, dependencies, or context
+    validations:
+      required: false

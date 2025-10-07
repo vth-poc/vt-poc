@@ -400,7 +400,7 @@ function renderIssues(issues) {
     const container = document.getElementById('issuesContainer');
     
     if (issues.length === 0) {
-        container.innerHTML = '<p class="loading">No issues found.</p>';
+        container.innerHTML = '<p class="loading">No work items found.</p>';
         return;
     }
     

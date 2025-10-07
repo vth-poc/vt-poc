@@ -61,7 +61,7 @@ jobs:
           echo "✅ Fetched $ISSUE_COUNT issues successfully"
           
           # Debug: Show first issue title
-          jq -r 'if type == "array" then (.[0].title // "No issues found") else "ERROR: Not an array" end' docs/data/issues.json
+          jq -r 'if type == "array" then (.[0].title // "No work items found") else "ERROR: Not an array" end' docs/data/issues.json
       
       - name: Setup Pages
         uses: actions/configure-pages@v4

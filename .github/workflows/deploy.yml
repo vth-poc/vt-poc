@@ -76,7 +76,7 @@ jobs:
 
             # Check if we're on the last page
             COUNT=$(echo "$RESPONSE" | jq length)
-            if [ "$COUNT" -lt "$PER_PAGE" ]; then
+            if [ $COUNT -lt 100 ]; then
               echo "✅ Reached final page."
               break
             fi

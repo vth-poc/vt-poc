@@ -46,7 +46,11 @@ jobs:
           echo "Fetching issues from ${{ github.repository }}..."
 
           # Extract 'since' date from config.toml
-          SINCE_DATE=$(grep -A 1 '\[issues-api\]' docs/config.toml | grep 'since' | sed 's/.*"\(.*\)".*/\1/')
+          SINCE_DATE=$(grep -A 3 '\[issues-api\]' docs/config.toml | grep 'since' | sed 's/.*"\(.*\)".*/\1/')
+          if [ -z "$SINCE_DATE" ]; then
+            echo "❌ 'since' date not found in config.toml. Please ensure it is set under [issues-api]."
+            exit 1
+          fi
           echo "📅 Using since date: $SINCE_DATE"
 
           PAGE=1

@@ -43,25 +43,58 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Fetching issues from ${{ github.repository }}..."
-          
-          # Fetch all issues without --paginate flag
-          # This returns a single JSON array directly
-          gh api \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            '/repos/${{ github.repository }}/issues?state=all&per_page=100' \
-            > docs/data/issues.json
-          
-          # Create timestamp file in AEST (UTC+10 for AEDT, UTC+11 for AEST)
-          # Using TZ environment variable to set timezone
-          echo "Fetched at $(TZ='Australia/Sydney' date '+%Y-%m-%d %H:%M:%S')" > docs/data/last-update.txt
-          
+
+          PAGE=1
+          TEMP_ALL_ISSUES_FILE="temp_all_issues.json"
+          TEMP_MERGED_ISSUES_FILE="temp_merged_issues.json"
+          OUTPUT_FILE="docs/data/issues.json"
+
+          # Initialize empty array
+          echo "[]" > "$TEMP_ALL_ISSUES_FILE"
+
+          while true; do
+            echo "📄 Processing page $PAGE..."
+            
+            # Make API request
+            if ! RESPONSE=$(gh api \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "/repos/${{ github.repository }}/issues?state=all&per_page=100&page=$PAGE&sort=created&direction=asc" 2>/dev/null); then
+              echo "❌ Failed to fetch page $PAGE"
+              break
+            fi
+            
+            # Check if we have data
+            if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "[]" ]; then
+              echo "✅ No more issues to fetch."
+              break
+            fi
+            
+            # Merge issues
+            jq -s '.[0] + .[1]' "$TEMP_ALL_ISSUES_FILE" <(echo "$RESPONSE") > "$TEMP_MERGED_ISSUES_FILE"
+            mv "$TEMP_MERGED_ISSUES_FILE" "$TEMP_ALL_ISSUES_FILE"
+
+            # Check if we're on the last page
+            COUNT=$(echo "$RESPONSE" | jq length)
+            if [ "$COUNT" -lt "$PER_PAGE" ]; then
+              echo "✅ Reached final page."
+              break
+            fi
+            
+            ((PAGE++))
+            sleep 1  # Be nice to the API
+          done
+
+          # Final processing and save
+          jq 'sort_by(.number)' "$TEMP_ALL_ISSUES_FILE" > "$OUTPUT_FILE"
+
+          # Cleanup
+          rm -rf "$TEMP_ALL_ISSUES_FILE" "$TEMP_MERGED_ISSUES_FILE"
+
           # Show summary
           ISSUE_COUNT=$(jq 'length' docs/data/issues.json || echo "0")
           echo "✅ Fetched $ISSUE_COUNT issues successfully"
-          
-          # Debug: Show first issue title
-          jq -r 'if type == "array" then (.[0].title // "No work items found") else "ERROR: Not an array" end' docs/data/issues.json
+          echo "🎉 Successfully saved $(jq length "$OUTPUT_FILE") issues to $OUTPUT_FILE"    
       
       - name: Setup Pages
         uses: actions/configure-pages@v4

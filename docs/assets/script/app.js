@@ -311,8 +311,6 @@ function updateWorkTypeChart() {
     const openIssues = allIssues.filter(i => i.state === 'open');
     const typeCounts = {
         project: 0,
-        bau: 0,
-        bug: 0,
         enhancement: 0,
         other: 0,
     };

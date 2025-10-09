@@ -19,10 +19,10 @@
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     
     /* Badge colors - light theme */
-    --badge-project-bg: #dbeafe;
-    --badge-project-text: #1e40af;
-    --badge-enhancement-bg: #fef3c7;
-    --badge-enhancement-text: #92400e;
+    --badge-project-bg: #ccf7f6;
+    --badge-project-text: #015e5c;
+    --badge-enhancement-bg: #f3d9ff;
+    --badge-enhancement-text: #4a0572;
     --badge-other-bg: #e5e7eb;
     --badge-other-text: #374151;
     
@@ -54,10 +54,10 @@
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
     
     /* Badge colors - dark theme */
-    --badge-project-bg: #1e3a8a;
-    --badge-project-text: #bfdbfe;
-    --badge-enhancement-bg: #78350f;
-    --badge-enhancement-text: #fde68a;
+    --badge-project-bg: #015e5c;
+    --badge-project-text: #9ef4f2;
+    --badge-enhancement-bg: #4a0572;
+    --badge-enhancement-text: #e9c7ff;
     --badge-other-bg: #374151;
     --badge-other-text: #d1d5db;
     

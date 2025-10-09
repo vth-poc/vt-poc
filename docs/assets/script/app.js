@@ -91,10 +91,10 @@ async function loadConfiguration() {
         };
         CONFIG.COLORS = {
             project: '#3b82f6',
-            enhancement: '#f59e0b',
+            enhancement: '#02cecb',
             other: '#6b7280',
             blocked: '#ef4444',
-            win: '#10b981',
+            win: '#ffbf00',
         };
         CONFIG.STATUS_LABELS = {
             blocked: 'blocked',

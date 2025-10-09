@@ -208,10 +208,10 @@ win = "win"            # High value-add work
 # Color scheme (hex codes without #)
 [colors]
 project = "3b82f6"      # Blue
-enhancement = "f59e0b"  # Orange
+enhancement = "02cecb"  # Teal
 other = "6b7280"        # Gray (for issues with both labels)
 blocked = "ef4444"      # Red (for blocked indicator)
-win = "10b981"          # Green (for win indicator)
+win = "ffbf00"          # Gold (for win indicator)
 
 # Team member name mappings
 [[member]]

@@ -297,6 +297,7 @@ header h1 {
     background: var(--badge-blocked-bg);
     color: var(--badge-blocked-text);
     border: 1px solid var(--badge-blocked-border);
+    margin-left: auto;
 }
 
 .work-badge.win {

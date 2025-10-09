@@ -207,8 +207,8 @@ win = "win"            # High value-add work
 
 # Color scheme (hex codes without #)
 [colors]
-project = "3b82f6"      # Blue
-enhancement = "02cecb"  # Teal
+project = "02cecb"      # Teal
+enhancement = "7209b7"  # Purple
 other = "6b7280"        # Gray (for issues with both labels)
 blocked = "ef4444"      # Red (for blocked indicator)
 win = "ffbf00"          # Gold (for win indicator)

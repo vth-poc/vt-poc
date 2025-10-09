@@ -313,11 +313,22 @@ function updateWorkTypeChart() {
         project: 0,
         enhancement: 0,
         other: 0,
+        blocked: 0,
+        win: 0,
     };
     
     openIssues.forEach(issue => {
         const type = categorizeIssue(issue);
+        const labels = issue.labels.map(l => l.name.toLowerCase());
+        const isBlocked = labels.includes(CONFIG.STATUS_LABELS.blocked.toLowerCase());
+        const isWin = labels.includes(CONFIG.STATUS_LABELS.win.toLowerCase());
+        
+        // Count by work type
         typeCounts[type]++;
+        
+        // Additionally count blocked and win
+        if (isBlocked) typeCounts.blocked++;
+        if (isWin) typeCounts.win++;
     });
     
     const ctx = document.getElementById('workTypeChart').getContext('2d');

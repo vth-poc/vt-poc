@@ -90,8 +90,8 @@ async function loadConfiguration() {
             'enhancement': ['enhancement'],
         };
         CONFIG.COLORS = {
-            project: '#3b82f6',
-            enhancement: '#02cecb',
+            project: '#02cecb',
+            enhancement: '#7209b7',
             other: '#6b7280',
             blocked: '#ef4444',
             win: '#ffbf00',

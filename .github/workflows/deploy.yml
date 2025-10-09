@@ -61,41 +61,72 @@ jobs:
           # Initialize empty array
           echo "[]" > "$TEMP_ALL_ISSUES_FILE"
 
+          # Fetch issues with 'project' label
+          echo "� Fetching 'project' issues..."
+          PAGE=1
           while true; do
-            echo "📄 Processing page $PAGE..."
+            echo "📄 Processing 'project' page $PAGE..."
             
-            # Make API request with 'since' parameter
             if ! RESPONSE=$(gh api \
               -H "Accept: application/vnd.github+json" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
-              "/repos/${{ github.repository }}/issues?state=all&per_page=100&page=$PAGE&sort=updated&direction=desc&since=$SINCE_DATE" 2>/dev/null); then
-              echo "❌ Failed to fetch page $PAGE"
+              "/repos/${{ github.repository }}/issues?state=all&labels=project&per_page=100&page=$PAGE&sort=updated&direction=desc&since=$SINCE_DATE" 2>/dev/null); then
+              echo "❌ Failed to fetch 'project' page $PAGE"
               break
             fi
             
-            # Check if we have data
             if [ -z "$RESPONSE" ] || [ "$RESPONSE" = '[]' ]; then
-              echo "✅ No more issues to fetch."
+              echo "✅ No more 'project' issues to fetch."
               break
             fi
             
-            # Merge issues
             jq -s '.[0] + .[1]' "$TEMP_ALL_ISSUES_FILE" <(echo "$RESPONSE") > "$TEMP_MERGED_ISSUES_FILE"
             mv "$TEMP_MERGED_ISSUES_FILE" "$TEMP_ALL_ISSUES_FILE"
 
-            # Check if we're on the last page
             COUNT=$(echo "$RESPONSE" | jq length)
             if [ $COUNT -lt 100 ]; then
-              echo "✅ Reached final page."
+              echo "✅ Reached final 'project' page."
               break
             fi
             
             ((PAGE++))
-            sleep 1  # Be nice to the API
+            sleep 1
           done
 
-          # Final processing and save
-          jq 'sort_by(.number)' "$TEMP_ALL_ISSUES_FILE" > "$OUTPUT_FILE"
+          # Fetch issues with 'enhancement' label
+          echo "📋 Fetching 'enhancement' issues..."
+          PAGE=1
+          while true; do
+            echo "📄 Processing 'enhancement' page $PAGE..."
+            
+            if ! RESPONSE=$(gh api \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "/repos/${{ github.repository }}/issues?state=all&labels=enhancement&per_page=100&page=$PAGE&sort=updated&direction=desc&since=$SINCE_DATE" 2>/dev/null); then
+              echo "❌ Failed to fetch 'enhancement' page $PAGE"
+              break
+            fi
+            
+            if [ -z "$RESPONSE" ] || [ "$RESPONSE" = '[]' ]; then
+              echo "✅ No more 'enhancement' issues to fetch."
+              break
+            fi
+            
+            jq -s '.[0] + .[1]' "$TEMP_ALL_ISSUES_FILE" <(echo "$RESPONSE") > "$TEMP_MERGED_ISSUES_FILE"
+            mv "$TEMP_MERGED_ISSUES_FILE" "$TEMP_ALL_ISSUES_FILE"
+
+            COUNT=$(echo "$RESPONSE" | jq length)
+            if [ $COUNT -lt 100 ]; then
+              echo "✅ Reached final 'enhancement' page."
+              break
+            fi
+            
+            ((PAGE++))
+            sleep 1
+          done
+
+          # Remove duplicates (issues with both labels) and save
+          jq 'unique_by(.id) | sort_by(.number)' "$TEMP_ALL_ISSUES_FILE" > "$OUTPUT_FILE"
 
           # Cleanup
           rm -rf "$TEMP_ALL_ISSUES_FILE" "$TEMP_MERGED_ISSUES_FILE"
@@ -104,15 +135,20 @@ jobs:
           TOTAL_ISSUES=$(jq length "$OUTPUT_FILE")
           OPEN_ISSUES=$(jq '[.[] | select(.state == "open")] | length' "$OUTPUT_FILE")
           CLOSED_ISSUES=$(jq '[.[] | select(.state == "closed")] | length' "$OUTPUT_FILE")
+          BLOCKED_ISSUES=$(jq '[.[] | select(.labels[]? | .name == "blocked")] | length' "$OUTPUT_FILE")
+          WIN_ISSUES=$(jq '[.[] | select(.labels[]? | .name == "win")] | length' "$OUTPUT_FILE")
           
           echo "🎉 Successfully saved $TOTAL_ISSUES issues to $OUTPUT_FILE"
           echo "📊 Open: $OPEN_ISSUES | Closed: $CLOSED_ISSUES"
-          echo "📅 Filtered since: $SINCE_DATE"
+          echo "� Blocked: $BLOCKED_ISSUES | 🏆 Wins: $WIN_ISSUES"
+          echo "�📅 Filtered since: $SINCE_DATE"
           
           # Set outputs for summary
           echo "total_issues=$TOTAL_ISSUES" >> $GITHUB_OUTPUT
           echo "open_issues=$OPEN_ISSUES" >> $GITHUB_OUTPUT
           echo "closed_issues=$CLOSED_ISSUES" >> $GITHUB_OUTPUT
+          echo "blocked_issues=$BLOCKED_ISSUES" >> $GITHUB_OUTPUT
+          echo "win_issues=$WIN_ISSUES" >> $GITHUB_OUTPUT
           echo "since_date=$SINCE_DATE" >> $GITHUB_OUTPUT
       
       - name: Generate Workflow Summary
@@ -123,7 +159,12 @@ jobs:
           echo "- **Total Issues:** ${{ steps.fetch-issues.outputs.total_issues }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Open Issues:** ${{ steps.fetch-issues.outputs.open_issues }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Closed Issues:** ${{ steps.fetch-issues.outputs.closed_issues }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **🚫 Blocked Issues:** ${{ steps.fetch-issues.outputs.blocked_issues }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **🏆 Win Issues:** ${{ steps.fetch-issues.outputs.win_issues }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Since Date:** ${{ steps.fetch-issues.outputs.since_date }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Label Filters" >> $GITHUB_STEP_SUMMARY
+          echo "Only issues with \`project\` or \`enhancement\` labels are included" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Deployment Status" >> $GITHUB_STEP_SUMMARY
           echo "✅ Dashboard successfully deployed to GitHub Pages" >> $GITHUB_STEP_SUMMARY

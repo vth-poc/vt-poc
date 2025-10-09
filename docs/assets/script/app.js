@@ -8,7 +8,11 @@ let nameMapping = {}; // Maps git-name to preferred-name
 // Configuration loaded from config.toml
 const CONFIG = {
     WORK_TYPES: {},
-    COLORS: {}
+    COLORS: {},
+    STATUS_LABELS: {
+        blocked: 'blocked',
+        win: 'win'
+    }
 };
 
 // Initialize the dashboard
@@ -53,6 +57,19 @@ async function loadConfiguration() {
             });
         }
         
+        // Parse status labels
+        const statusLabelsSection = tomlText.match(/\[status-labels\]([\s\S]*?)(?=\n\[|$)/);
+        if (statusLabelsSection) {
+            const lines = statusLabelsSection[1].trim().split('\n');
+            lines.forEach(line => {
+                const match = line.match(/(\w+)\s*=\s*"([^"]+)"/);
+                if (match) {
+                    const [, key, value] = match;
+                    CONFIG.STATUS_LABELS[key] = value;
+                }
+            });
+        }
+        
         // Parse member mappings
         const memberBlocks = tomlText.split('[[member]]').filter(block => block.trim());
         memberBlocks.forEach(block => {
@@ -69,17 +86,19 @@ async function loadConfiguration() {
         console.error('Could not load config.toml, using defaults:', error);
         // Set defaults if loading fails
         CONFIG.WORK_TYPES = {
-            'project': ['project', 'feature', 'epic'],
-            'bau': ['bau', 'support', 'maintenance'],
-            'bug': ['bug', 'defect'],
-            'enhancement': ['enhancement', 'improvement'],
+            'project': ['project'],
+            'enhancement': ['enhancement'],
         };
         CONFIG.COLORS = {
             project: '#3b82f6',
-            bau: '#10b981',
-            bug: '#ef4444',
             enhancement: '#f59e0b',
             other: '#6b7280',
+            blocked: '#ef4444',
+            win: '#10b981',
+        };
+        CONFIG.STATUS_LABELS = {
+            blocked: 'blocked',
+            win: 'win'
         };
     }
 }
@@ -218,11 +237,11 @@ function processTeamData() {
                 issues: [],
                 workBreakdown: {
                     project: 0,
-                    bau: 0,
-                    bug: 0,
                     enhancement: 0,
                     other: 0,
                 },
+                blockedCount: 0,
+                winCount: 0,
             };
         }
         
@@ -231,6 +250,15 @@ function processTeamData() {
         // Categorize work type
         const workType = categorizeIssue(issue);
         teamData[assignee].workBreakdown[workType]++;
+        
+        // Track blocked and win status
+        const labels = issue.labels.map(l => l.name.toLowerCase());
+        if (labels.includes(CONFIG.STATUS_LABELS.blocked.toLowerCase())) {
+            teamData[assignee].blockedCount++;
+        }
+        if (labels.includes(CONFIG.STATUS_LABELS.win.toLowerCase())) {
+            teamData[assignee].winCount++;
+        }
     });
 }
 
@@ -248,21 +276,30 @@ function categorizeIssue(issue) {
 
 function updateSummaryCards() {
     const openIssues = allIssues.filter(i => i.state === 'open');
-    const activeMembers = Object.keys(teamData).filter(member => member !== 'Unassigned').length;
+    const assignedIssues = openIssues.filter(i => i.assignee);
+    const unassignedIssues = openIssues.filter(i => !i.assignee);
     
     let projectCount = 0;
-    let bauCount = 0;
+    let enhancementCount = 0;
+    let blockedCount = 0;
+    let winCount = 0;
     
     openIssues.forEach(issue => {
         const type = categorizeIssue(issue);
         if (type === 'project') projectCount++;
-        if (type === 'bau') bauCount++;
+        if (type === 'enhancement') enhancementCount++;
+        
+        const labels = issue.labels.map(l => l.name.toLowerCase());
+        if (labels.includes(CONFIG.STATUS_LABELS.blocked.toLowerCase())) blockedCount++;
+        if (labels.includes(CONFIG.STATUS_LABELS.win.toLowerCase())) winCount++;
     });
     
-    document.getElementById('totalIssues').textContent = openIssues.length;
-    document.getElementById('activeMembers').textContent = activeMembers;
+    document.getElementById('totalAssigned').textContent = assignedIssues.length;
+    document.getElementById('totalUnassigned').textContent = unassignedIssues.length;
     document.getElementById('projectCount').textContent = projectCount;
-    document.getElementById('bauCount').textContent = bauCount;
+    document.getElementById('enhancementCount').textContent = enhancementCount;
+    document.getElementById('blockedCount').textContent = blockedCount;
+    document.getElementById('winCount').textContent = winCount;
 }
 
 function updateCharts() {
@@ -380,6 +417,8 @@ function renderTeamMembers() {
                     <div class="team-member-info">
                         <h3>${member.name}</h3>
                         <p>${openIssues} open, ${closedIssues} closed work items</p>
+                        ${member.blockedCount > 0 ? `<p style="color: #ef4444; font-weight: bold;"><i class="fa-solid fa-ban"></i> ${member.blockedCount} blocked</p>` : ''}
+                        ${member.winCount > 0 ? `<p style="color: #10b981; font-weight: bold;"><i class="fa-solid fa-trophy"></i> ${member.winCount} wins</p>` : ''}
                     </div>
                 </div>
                 <div class="work-breakdown">
@@ -409,6 +448,11 @@ function renderIssues(issues) {
         const assigneeLogin = issue.assignee ? issue.assignee.login : 'Unassigned';
         const assigneeName = assigneeLogin !== 'Unassigned' ? getDisplayName(assigneeLogin) : 'Unassigned';
         
+        // Check for blocked and win labels
+        const labels = issue.labels.map(l => l.name.toLowerCase());
+        const isBlocked = labels.includes(CONFIG.STATUS_LABELS.blocked.toLowerCase());
+        const isWin = labels.includes(CONFIG.STATUS_LABELS.win.toLowerCase());
+        
         return `
             <div class="issue-item" style="border-left-color: ${CONFIG.COLORS[workType]}">
                 <div class="issue-header">
@@ -416,6 +460,8 @@ function renderIssues(issues) {
                         <div class="issue-title">
                             <a href="${issue.html_url}" target="_blank">${issue.title}</a>
                             <span class="issue-number">#${issue.number}</span>
+                            ${isBlocked ? '<span style="margin-left: 8px; color: #ef4444; font-weight: bold;"><i class="fa-solid fa-ban"></i> BLOCKED</span>' : ''}
+                            ${isWin ? '<span style="margin-left: 8px; color: #10b981; font-weight: bold;"><i class="fa-solid fa-trophy"></i> WIN</span>' : ''}
                         </div>
                         <div class="issue-meta">
                             <div class="issue-assignee">

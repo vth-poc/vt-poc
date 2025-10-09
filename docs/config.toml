@@ -5,20 +5,25 @@
 since = "2025-07-01T00:00:00Z"  # ISO 8601 format
 
 # Work Type Labels Mapping
-# Customize these to match your GitHub issue labels
+# Only 'project' and 'enhancement' labels are tracked
+# Everything else is classified as 'other'
 [work-types]
-project = ["project", "feature", "epic"]
-bau = ["bau", "support", "maintenance"]
-bug = ["bug", "defect"]
-enhancement = ["enhancement", "improvement"]
+project = ["project"]
+enhancement = ["enhancement"]
+
+# Special Status Labels
+# These labels can be combined with project/enhancement
+[status-labels]
+blocked = "blocked"     # Work is blocked, needs manager intervention
+win = "win"            # High value-add work
 
 # Chart Colors (hex codes without #)
 [colors]
 project = "3b82f6"      # Blue
-bau = "10b981"          # Green
-bug = "ef4444"          # Red
 enhancement = "f59e0b"  # Orange
 other = "6b7280"        # Gray
+blocked = "ef4444"      # Red (for blocked indicator)
+win = "10b981"          # Green (for win indicator)
 
 # Team Members
 # Map GitHub usernames to preferred display names

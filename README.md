@@ -1,19 +1,25 @@
 
-# Engineering Team Dashboard 🚀
+# Engineering Team Dashboard
+
+<p align="center">
+  <img src="docs/assets/img/dashboard.png" alt="Engineering Team Dashboard" width="600">
+</p>
 
 A beautiful, real-time dashboard for visualizing team capacity and work distribution based on GitHub Issues. Perfect for engineering managers to track what their team is working on at a glance.
 
 ## 🌟 Features
 
+- **Label-Based Filtering**: Only tracks issues with `project` or `enhancement` labels
+- **Blocked Work Tracking**: Identifies blocked work needing manager intervention
+- **Win Highlighting**: Highlights high-value work items
 - **Real-time Updates**: Automatically refreshes when issues are created, edited, or closed
 - **Date Filtering**: Filter issues by last updated date to focus on recent work
 - **Team Capacity Visualization**: See at-a-glance who's working on what
-- **Work Type Distribution**: Visualize projects vs BAU vs bugs vs enhancements vs admin tasks
+- **Work Type Distribution**: Visualize projects vs enhancements vs other work
 - **Name Mapping**: Map GitHub usernames to preferred display names
 - **Dark/Light Theme**: Toggle between themes with automatic system preference detection
 - **Manual Refresh**: Force data reload with cache-busting
 - **Filterable Issue List**: Filter by assignee, label, or state
-- **Rich Issue Templates**: Pre-configured templates for projects, BAU, bugs, enhancements, and admin tasks
 
 ## 🚀 Quick Start
 
@@ -47,51 +53,67 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
    preferred-name = "Display Name"
    ```
 
-4. **Customize Work Types** (optional):
-   Edit `docs/config.toml` to define work categories and colors:
+4. **Customize Work Types and Labels**:
+   Edit `docs/config.toml` to define work categories and special labels:
 
    ```toml
+   # Work Type Labels - Only these labels are tracked
    [work-types]
-   project = ["project", "feature", "epic"]
-   bau = ["bau", "support", "maintenance"]
-   bug = ["bug", "defect"]
-   enhancement = ["enhancement", "improvement"]
+   project = ["project"]
+   enhancement = ["enhancement"]
+   
+   # Special Status Labels - Can be combined with work types
+   [status-labels]
+   blocked = "blocked"   # Work needing manager intervention
+   win = "win"          # High value-add work
 
    [colors]
    project = "3b82f6"      # Blue (hex without #)
-   bau = "10b981"          # Green
-   bug = "ef4444"          # Red
    enhancement = "f59e0b"  # Orange
    other = "6b7280"        # Gray
+   blocked = "ef4444"      # Red (indicator color)
+   win = "10b981"          # Green (indicator color)
    ```
 
-5. **Create Issues**: Use GitHub Issues with provided templates to track work items
+5. **Create Issues**:
+   - Add `project` or `enhancement` label to track issues
+   - Optionally add `blocked` label for blocked work
+   - Optionally add `win` label for high-value work
+   - Issues without `project` or `enhancement` labels will be ignored
 
 ## 🔄 How It Works
 
 1. **GitHub Actions Workflow** (`.github/workflows/deploy.yml`):
    - Triggers on issue events (opened, edited, closed, labeled, etc.)
    - Reads date filter from `config.toml` under `[issues-api]` section
-   - Fetches issues via GitHub API with `since` parameter for date filtering
+   - Fetches **only** issues with `project` or `enhancement` labels via GitHub API
+   - Uses `since` parameter for date filtering
    - Paginates through all results (100 issues per page)
+   - Removes duplicates (issues with both labels)
+   - Tracks blocked and win counts
    - Saves to `docs/data/issues.json`
-   - Generates deployment summary with issue counts and filter date
+   - Generates deployment summary with issue counts, blocked/win stats
    - Deploys to GitHub Pages
 
 2. **Dashboard** (`docs/index.html` + `docs/assets/script/app.js`):
    - Loads configuration from `docs/config.toml`
    - Fetches `issues.json` with cache-busting
+   - Categorizes issues by work type
+   - Identifies blocked and win items
    - Renders charts using Chart.js
-   - Displays team member cards and filterable issue list
+   - Displays team member cards with blocked/win indicators
+   - Shows filterable issue list with visual status badges
 
 ## 📊 Dashboard Components
 
 ### Summary Cards
 
-- Total open work items
-- Active team members (with assigned issues)
+- Total assigned work items (open issues with assignee)
+- Total unassigned work items (open issues without assignee)
 - Project count
-- BAU support count
+- Enhancement count
+- **Blocked count** (work needing intervention)
+- **Win count** (high-value work)
 
 ### Charts
 
@@ -102,11 +124,15 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
 
 - Cards showing each team member's work breakdown
 - Avatar, name, and open/closed issue counts
+- **Blocked work indicator** (red, with count)
+- **Win work indicator** (green, with count)
 
 ### Issues List
 
 - All issues with assignee, labels, and state
 - Filterable by team member, label, and state
+- **Visual blocked badge** (red "BLOCKED" indicator)
+- **Visual win badge** (green "WIN" indicator)
 
 ## 🛠️ Technology Stack
 
@@ -117,15 +143,39 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
 - **Deployment**: GitHub Actions + GitHub Pages
 - **API**: GitHub REST API v3
 
-## 📝 Issue Templates
+## 📝 Label Strategy
 
-The repository includes comprehensive issue templates for:
+The dashboard uses a focused label strategy:
 
-- **Project Work**: Major features or initiatives with tasks and acceptance criteria
-- **BAU Support**: Business-as-usual and recurring support work with frequency tracking
-- **Bug Report**: Defects and issues with reproduction steps and severity levels
-- **Enhancement**: POCs, new features, tech debt removal, and performance improvements
-- **Admin Task**: E-learning, housekeeping, and documentation updates
+### Work Type Labels (Required)
+
+Issues **must** have one of these labels to appear on the dashboard:
+
+- **`project`**: Major projects, initiatives, or feature development
+- **`enhancement`**: Improvements, POCs, tech debt removal, performance work
+
+Issues without these labels are **not tracked**.
+
+### Status Labels (Optional)
+
+These labels can be added to any tracked issue:
+
+- **`blocked`**: Work is blocked and needs manager intervention or escalation
+  - Displays in red on dashboard
+  - Counted separately in summary cards
+  - Shows on team member cards
+
+- **`win`**: High-value work that delivers significant impact
+  - Displays in green on dashboard
+  - Counted separately in summary cards
+  - Shows on team member cards
+
+### Example Combinations
+
+- `project` + `blocked` = Blocked project work
+- `enhancement` + `win` = High-value enhancement
+- `project` + `blocked` + `win` = Blocked high-value project
+- Neither `project` nor `enhancement` = Not tracked (ignored)
 
 ## 🎨 Theming
 
@@ -145,20 +195,23 @@ The dashboard supports both light and dark themes:
 # Only show issues updated after this date (ISO 8601 format)
 since = "2025-07-01T00:00:00Z"
 
-# Work type mappings
+# Work type mappings - ONLY these labels are tracked
 [work-types]
-project = ["project", "feature", "epic"]
-bau = ["bau", "support", "maintenance"]
-bug = ["bug", "defect"]
-enhancement = ["enhancement", "improvement"]
+project = ["project"]
+enhancement = ["enhancement"]
+
+# Special Status Labels - Can be combined with work types
+[status-labels]
+blocked = "blocked"     # Work is blocked, needs manager intervention
+win = "win"            # High value-add work
 
 # Color scheme (hex codes without #)
 [colors]
 project = "3b82f6"      # Blue
-bau = "10b981"          # Green
-bug = "ef4444"          # Red
 enhancement = "f59e0b"  # Orange
-other = "6b7280"        # Gray
+other = "6b7280"        # Gray (for issues with both labels)
+blocked = "ef4444"      # Red (for blocked indicator)
+win = "10b981"          # Green (for win indicator)
 
 # Team member name mappings
 [[member]]
@@ -181,14 +234,8 @@ Deployment typically takes 30-60 seconds.
 ```text
 .
 ├── .github/
-│   ├── ISSUE_TEMPLATE/       # Issue templates (5 types)
-│   │   ├── project.yml      # Project work
-│   │   ├── bau.yml          # BAU support
-│   │   ├── bug.yml          # Bug reports
-│   │   ├── enhancement.yml  # Enhancements/POCs
-│   │   └── task.yml         # Admin tasks
 │   └── workflows/
-│       └── deploy.yml        # Deployment workflow
+│       └── deploy.yml        # Deployment workflow with label filtering
 ├── docs/                     # GitHub Pages root
 │   ├── assets/
 │   │   ├── css/
@@ -214,10 +261,11 @@ Deployment typically takes 30-60 seconds.
 
 ## 🤝 Contributing
 
-1. Create issues using the provided templates
-2. Assign issues to team members
-3. Use appropriate labels (project, bau, bug, enhancement)
-4. Dashboard updates automatically
+1. Create issues with `project` or `enhancement` labels for tracking
+2. Add `blocked` label when work is blocked
+3. Add `win` label for high-value work
+4. Assign issues to team members
+5. Dashboard updates automatically on issue changes
 
 ## 📄 License
 

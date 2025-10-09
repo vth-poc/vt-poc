@@ -21,10 +21,6 @@
     /* Badge colors - light theme */
     --badge-project-bg: #dbeafe;
     --badge-project-text: #1e40af;
-    --badge-bau-bg: #d1fae5;
-    --badge-bau-text: #065f46;
-    --badge-bug-bg: #fee2e2;
-    --badge-bug-text: #991b1b;
     --badge-enhancement-bg: #fef3c7;
     --badge-enhancement-text: #92400e;
     --badge-other-bg: #e5e7eb;
@@ -60,10 +56,6 @@
     /* Badge colors - dark theme */
     --badge-project-bg: #1e3a8a;
     --badge-project-text: #bfdbfe;
-    --badge-bau-bg: #064e3b;
-    --badge-bau-text: #a7f3d0;
-    --badge-bug-bg: #7f1d1d;
-    --badge-bug-text: #fecaca;
     --badge-enhancement-bg: #78350f;
     --badge-enhancement-text: #fde68a;
     --badge-other-bg: #374151;
@@ -270,16 +262,6 @@ header h1 {
 .work-badge.project {
     background: var(--badge-project-bg);
     color: var(--badge-project-text);
-}
-
-.work-badge.bau {
-    background: var(--badge-bau-bg);
-    color: var(--badge-bau-text);
-}
-
-.work-badge.bug {
-    background: var(--badge-bug-bg);
-    color: var(--badge-bug-text);
 }
 
 .work-badge.enhancement {

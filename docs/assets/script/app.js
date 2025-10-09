@@ -426,8 +426,6 @@ function renderTeamMembers() {
                     <div class="team-member-info">
                         <h3>${member.name}</h3>
                         <p>${openIssues} open, ${closedIssues} closed work items</p>
-                        ${member.blockedCount > 0 ? `<p style="color: #ef4444; font-weight: bold;"><i class="fa-solid fa-ban"></i> ${member.blockedCount} blocked</p>` : ''}
-                        ${member.winCount > 0 ? `<p style="color: #10b981; font-weight: bold;"><i class="fa-solid fa-trophy"></i> ${member.winCount} wins</p>` : ''}
                     </div>
                 </div>
                 <div class="work-breakdown">
@@ -438,6 +436,16 @@ function renderTeamMembers() {
                                 ${type.charAt(0).toUpperCase() + type.slice(1)}: ${count}
                             </span>
                         `).join('')}
+                    ${member.blockedCount > 0 ? `
+                        <span class="work-badge blocked">
+                            <i class="fa-solid fa-ban"></i> Blocked: ${member.blockedCount}
+                        </span>
+                    ` : ''}
+                    ${member.winCount > 0 ? `
+                        <span class="work-badge win">
+                            <i class="fa-solid fa-trophy"></i> Wins: ${member.winCount}
+                        </span>
+                    ` : ''}
                 </div>
             </div>
         `;

@@ -216,6 +216,15 @@ header h1 {
     color: var(--text-primary);
 }
 
+.chart-full-width {
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
 .team-section, .issues-section {
     background: var(--surface);
     padding: 2rem;

@@ -3,6 +3,7 @@ let allIssues = [];
 let teamData = {};
 let workTypeChart = null;
 let teamCapacityChart = null;
+let workloadHeatmap = null;
 let nameMapping = {}; // Maps git-name to preferred-name
 
 // Configuration loaded from config.toml
@@ -305,6 +306,7 @@ function updateSummaryCards() {
 function updateCharts() {
     updateWorkTypeChart();
     updateTeamCapacityChart();
+    updateWorkloadHeatmap();
 }
 
 function updateWorkTypeChart() {
@@ -402,6 +404,110 @@ function updateTeamCapacityChart() {
                     ticks: {
                         stepSize: 1,
                     }
+                }
+            }
+        }
+    });
+}
+
+function updateWorkloadHeatmap() {
+    const teamMembers = Object.keys(teamData).filter(m => m !== 'Unassigned');
+    
+    if (teamMembers.length === 0) {
+        return;
+    }
+    
+    // Get open issue counts for each team member
+    const workloadData = teamMembers.map((member, index) => {
+        const openCount = teamData[member].issues.filter(i => i.state === 'open').length;
+        const displayName = teamData[member].name;
+        
+        return {
+            x: index,
+            y: 0, // Single row for simplicity
+            r: Math.max(10, openCount * 8), // Bubble radius based on count (min 10, scale by 8)
+            count: openCount,
+            name: displayName
+        };
+    });
+    
+    // Find max count for color scaling
+    const maxCount = Math.max(...workloadData.map(d => d.count));
+    
+    // Get color gradient from light to dark based on workload
+    const getColorForCount = (count) => {
+        if (count === 0) return 'rgba(200, 200, 200, 0.3)'; // Gray for no work
+        
+        const intensity = count / maxCount;
+        
+        if (intensity < 0.3) {
+            // Light green - low workload
+            return `rgba(16, 185, 129, ${0.3 + intensity * 0.3})`;
+        } else if (intensity < 0.6) {
+            // Orange - medium workload
+            return `rgba(251, 191, 36, ${0.4 + intensity * 0.3})`;
+        } else {
+            // Red - high workload
+            return `rgba(239, 68, 68, ${0.5 + intensity * 0.4})`;
+        }
+    };
+    
+    const bubbleColors = workloadData.map(d => getColorForCount(d.count));
+    
+    const ctx = document.getElementById('workloadHeatmap').getContext('2d');
+    
+    if (workloadHeatmap) {
+        workloadHeatmap.destroy();
+    }
+    
+    workloadHeatmap = new Chart(ctx, {
+        type: 'bubble',
+        data: {
+            datasets: [{
+                label: 'Open Issues',
+                data: workloadData,
+                backgroundColor: bubbleColors,
+                borderColor: bubbleColors.map(c => c.replace(/[\d.]+\)$/, '1)')), // Solid border
+                borderWidth: 2,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 4,
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const data = context.raw;
+                            return `${data.name}: ${data.count} open issue${data.count !== 1 ? 's' : ''}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    ticks: {
+                        callback: function(value, index) {
+                            return teamMembers[value] ? teamData[teamMembers[value]].name : '';
+                        },
+                        autoSkip: false,
+                        maxRotation: 45,
+                        minRotation: 45
+                    },
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    display: false,
+                    min: -0.5,
+                    max: 0.5
                 }
             }
         }

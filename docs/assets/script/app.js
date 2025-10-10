@@ -512,6 +512,7 @@ function updateWorkloadHeatmap() {
                 backgroundColor: bubbleColors,
                 borderColor: bubbleColors.map(c => c.replace('0.5', '1')), // Solid border with full opacity
                 borderWidth: 2,
+                hoverBorderWidth: 3,
             }]
         },
         options: {
@@ -520,10 +521,10 @@ function updateWorkloadHeatmap() {
             aspectRatio: 3,
             layout: {
                 padding: {
-                    top: 40,
-                    bottom: 20,
-                    left: 20,
-                    right: 20
+                    top: 50,
+                    bottom: 30,
+                    left: 30,
+                    right: 30
                 }
             },
             plugins: {
@@ -557,10 +558,12 @@ function updateWorkloadHeatmap() {
                 },
                 y: {
                     display: false,
-                    min: -1,
-                    max: 1
+                    min: -1.2,
+                    max: 1.2
                 }
-            }
+            },
+            // Prevent clipping of bubbles on hover
+            clip: false
         }
     });
 }

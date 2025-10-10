@@ -413,8 +413,28 @@ function updateTeamCapacityChart() {
     // Map team members to their preferred names for display
     const displayNames = teamMembers.map(member => teamData[member].name);
     
-    // Get primary color from CSS variable
+    // Get primary color from CSS variable and convert to semi-transparent
     const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+    
+    // Convert hex/rgb color to rgba with 0.5 opacity
+    let backgroundColor, borderColor;
+    if (primaryColor.startsWith('#')) {
+        // Convert hex to rgba
+        const hex = primaryColor.replace('#', '');
+        const r = parseInt(hex.substr(0, 2), 16);
+        const g = parseInt(hex.substr(2, 2), 16);
+        const b = parseInt(hex.substr(4, 2), 16);
+        backgroundColor = `rgba(${r}, ${g}, ${b}, 0.5)`;
+        borderColor = `rgba(${r}, ${g}, ${b}, 1)`;
+    } else if (primaryColor.startsWith('rgb')) {
+        // Already rgb/rgba, just modify alpha
+        backgroundColor = primaryColor.replace('rgb(', 'rgba(').replace(')', ', 0.5)');
+        borderColor = primaryColor.replace('rgb(', 'rgba(').replace(')', ', 1)');
+    } else {
+        // Fallback to original color
+        backgroundColor = primaryColor;
+        borderColor = primaryColor;
+    }
     
     const ctx = document.getElementById('teamCapacityChart').getContext('2d');
     
@@ -429,7 +449,9 @@ function updateTeamCapacityChart() {
             datasets: [{
                 label: 'Open Work Items',
                 data: issueCounts,
-                backgroundColor: primaryColor,
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
+                borderWidth: 2,
                 borderRadius: 6,
             }]
         },

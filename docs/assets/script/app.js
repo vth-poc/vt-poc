@@ -521,10 +521,10 @@ function updateWorkloadHeatmap() {
             aspectRatio: 3,
             layout: {
                 padding: {
-                    top: 50,
-                    bottom: 30,
-                    left: 30,
-                    right: 30
+                    top: 60,
+                    bottom: 40,
+                    left: 40,
+                    right: 40
                 }
             },
             plugins: {
@@ -558,8 +558,8 @@ function updateWorkloadHeatmap() {
                 },
                 y: {
                     display: false,
-                    min: -1.2,
-                    max: 1.2
+                    min: -1.5,
+                    max: 1.5
                 }
             },
             // Prevent clipping of bubbles on hover

@@ -1,9 +1,9 @@
 
-# Engineering Team Dashboard
-
 <p align="center">
-  <img src="docs/assets/img/dashboard.png" alt="Engineering Team Dashboard" width="600">
+  <img src="docs/assets/img/dashboard.png" alt="Engineering Team Dashboard" width="128">
 </p>
+
+# Engineering Team Dashboard
 
 A beautiful, real-time dashboard for visualizing team capacity and work distribution based on GitHub Issues. Perfect for engineering managers to track what their team is working on at a glance.
 

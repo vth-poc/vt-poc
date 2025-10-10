@@ -106,33 +106,67 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
 
 ## 📊 Dashboard Components
 
-### Summary Cards
+### Summary Cards (2-Row Layout)
 
-- Total assigned work items (open issues with assignee)
-- Total unassigned work items (open issues without assignee)
-- Project count
-- Enhancement count
-- **Blocked count** (work needing intervention)
-- **Win count** (high-value work)
+**Top Row (Large Cards)**:
 
-### Charts
+- **Total Assigned**: Count of open issues with assignee
+- **Total Unassigned**: Count of open issues without assignee
 
-- **Work Distribution**: Pie chart showing breakdown by work type
-- **Team Capacity**: Bar chart showing open issues per team member
+**Bottom Row (4 Cards)**:
 
-### Team Members
+- **Projects**: Count of issues with `project` label
+- **Enhancements**: Count of issues with `enhancement` label
+- **Blocked**: Count of issues with `blocked` label (needs intervention)
+- **Wins**: Count of issues with `win` label (high-value work)
 
-- Cards showing each team member's work breakdown
-- Avatar, name, and open/closed issue counts
-- **Blocked work indicator** (red, with count)
-- **Win work indicator** (green, with count)
+### Charts (2-Column Layout)
+
+**Left Column**:
+
+- **Work Distribution by Type**: Doughnut chart showing breakdown of:
+  - Project work
+  - Enhancement work
+  - Other work (issues with both labels)
+  - Blocked work
+  - Win work
+
+**Right Column (Stacked)**:
+
+- **Team Capacity Overview**: Bar chart showing open issues per team member
+  - Uses dynamic primary color from theme
+  - Shows preferred names from config
+  
+- **Team Workload Heatmap**: Bubble chart visualization
+  - Bubble size represents workload (number of open issues)
+  - Color intensity indicates workload level:
+    - **Green**: Low workload (0-30% of max)
+    - **Orange**: Medium workload (30-60% of max)
+    - **Red**: High workload (60-100% of max)
+  - Team member names displayed at 45° angle
+  - Interactive tooltips with exact issue counts
+  - Optimized layout with proper padding to prevent bubble clipping
+
+### Team Member Details
+
+- Individual cards for each team member with assigned issues
+- Avatar, preferred name, and open/closed issue counts
+- Work breakdown by type (Project, Enhancement, Other)
+- **Blocked work indicator** (red badge with ban icon, right-aligned)
+- **Win work indicator** (gold badge with trophy icon, right-aligned)
 
 ### Issues List
 
-- All issues with assignee, labels, and state
-- Filterable by team member, label, and state
-- **Visual blocked badge** (red "BLOCKED" indicator)
-- **Visual win badge** (green "WIN" indicator)
+- All tracked issues displayed with full details
+- Assignee with avatar and preferred name
+- All labels with original GitHub colors
+- **Visual blocked badge** (red "BLOCKED" text with ban icon)
+- **Visual win badge** (gold "WIN" text with trophy icon)
+- State indicator (open/closed)
+- Filterable by:
+  - Team member (using preferred names)
+  - Label
+  - State (open/closed/all)
 
 ## 🛠️ Technology Stack
 

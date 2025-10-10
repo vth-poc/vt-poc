@@ -305,7 +305,6 @@ function updateSummaryCards() {
 
 function updateCharts() {
     updateWorkTypeChart();
-    updateTeamCapacityChart();
     updateWorkloadHeatmap();
 }
 

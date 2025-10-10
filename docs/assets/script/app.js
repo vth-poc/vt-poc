@@ -477,21 +477,21 @@ function updateWorkloadHeatmap() {
     // Find max count for color scaling
     const maxCount = Math.max(...workloadData.map(d => d.count));
     
-    // Get color gradient from light to dark based on workload
+    // Get color gradient with semi-transparent colors (like Chart.js bubble example)
     const getColorForCount = (count) => {
-        if (count === 0) return 'rgba(200, 200, 200, 0.3)'; // Gray for no work
+        if (count === 0) return 'rgba(200, 200, 200, 0.5)'; // Gray for no work
         
         const intensity = count / maxCount;
         
         if (intensity < 0.3) {
-            // Light green - low workload
-            return `rgba(16, 185, 129, ${0.3 + intensity * 0.3})`;
+            // Green - low workload (semi-transparent)
+            return 'rgba(16, 185, 129, 0.5)';
         } else if (intensity < 0.6) {
-            // Orange - medium workload
-            return `rgba(251, 191, 36, ${0.4 + intensity * 0.3})`;
+            // Orange - medium workload (semi-transparent)
+            return 'rgba(251, 191, 36, 0.5)';
         } else {
-            // Red - high workload
-            return `rgba(239, 68, 68, ${0.5 + intensity * 0.4})`;
+            // Red - high workload (semi-transparent)
+            return 'rgba(239, 68, 68, 0.5)';
         }
     };
     
@@ -510,7 +510,7 @@ function updateWorkloadHeatmap() {
                 label: 'Open Work Items',
                 data: workloadData,
                 backgroundColor: bubbleColors,
-                borderColor: bubbleColors.map(c => c.replace(/[\d.]+\)$/, '1)')), // Solid border
+                borderColor: bubbleColors.map(c => c.replace('0.5', '1')), // Solid border with full opacity
                 borderWidth: 2,
             }]
         },

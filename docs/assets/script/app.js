@@ -368,6 +368,9 @@ function updateTeamCapacityChart() {
     // Map team members to their preferred names for display
     const displayNames = teamMembers.map(member => teamData[member].name);
     
+    // Get primary color from CSS variable
+    const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+    
     const ctx = document.getElementById('teamCapacityChart').getContext('2d');
     
     if (teamCapacityChart) {
@@ -381,7 +384,7 @@ function updateTeamCapacityChart() {
             datasets: [{
                 label: 'Open Work Items',
                 data: issueCounts,
-                backgroundColor: CONFIG.COLORS.project,
+                backgroundColor: primaryColor,
                 borderRadius: 6,
             }]
         },

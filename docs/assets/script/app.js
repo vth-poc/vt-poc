@@ -226,39 +226,76 @@ function processTeamData() {
     teamData = {};
     
     allIssues.forEach(issue => {
-        // Get assignee (use git login as key)
-        const assignee = issue.assignee ? issue.assignee.login : 'Unassigned';
-        const displayName = assignee !== 'Unassigned' ? getDisplayName(assignee) : 'Unassigned';
+        // Get all assignees (use assignees array, fallback to assignee for backward compatibility)
+        const assignees = issue.assignees && issue.assignees.length > 0 
+            ? issue.assignees 
+            : (issue.assignee ? [issue.assignee] : []);
         
-        if (!teamData[assignee]) {
-            teamData[assignee] = {
-                name: displayName,  // Use preferred name for display
-                gitLogin: assignee,  // Keep git login for reference
-                avatar: issue.assignee ? issue.assignee.avatar_url : null,
-                issues: [],
-                workBreakdown: {
-                    project: 0,
-                    enhancement: 0,
-                    other: 0,
-                },
-                blockedCount: 0,
-                winCount: 0,
-            };
-        }
-        
-        teamData[assignee].issues.push(issue);
-        
-        // Categorize work type
-        const workType = categorizeIssue(issue);
-        teamData[assignee].workBreakdown[workType]++;
-        
-        // Track blocked and win status
-        const labels = issue.labels.map(l => l.name.toLowerCase());
-        if (labels.includes(CONFIG.STATUS_LABELS.blocked.toLowerCase())) {
-            teamData[assignee].blockedCount++;
-        }
-        if (labels.includes(CONFIG.STATUS_LABELS.win.toLowerCase())) {
-            teamData[assignee].winCount++;
+        // If no assignees, track as Unassigned
+        if (assignees.length === 0) {
+            if (!teamData['Unassigned']) {
+                teamData['Unassigned'] = {
+                    name: 'Unassigned',
+                    gitLogin: 'Unassigned',
+                    avatar: null,
+                    issues: [],
+                    workBreakdown: {
+                        project: 0,
+                        enhancement: 0,
+                        other: 0,
+                    },
+                    blockedCount: 0,
+                    winCount: 0,
+                };
+            }
+            
+            teamData['Unassigned'].issues.push(issue);
+            
+            const workType = categorizeIssue(issue);
+            teamData['Unassigned'].workBreakdown[workType]++;
+            
+            const labels = issue.labels.map(l => l.name.toLowerCase());
+            if (labels.includes(CONFIG.STATUS_LABELS.blocked.toLowerCase())) {
+                teamData['Unassigned'].blockedCount++;
+            }
+            if (labels.includes(CONFIG.STATUS_LABELS.win.toLowerCase())) {
+                teamData['Unassigned'].winCount++;
+            }
+        } else {
+            // Process each assignee
+            assignees.forEach(assignee => {
+                const assigneeLogin = assignee.login;
+                const displayName = getDisplayName(assigneeLogin);
+                
+                if (!teamData[assigneeLogin]) {
+                    teamData[assigneeLogin] = {
+                        name: displayName,
+                        gitLogin: assigneeLogin,
+                        avatar: assignee.avatar_url,
+                        issues: [],
+                        workBreakdown: {
+                            project: 0,
+                            enhancement: 0,
+                            other: 0,
+                        },
+                        blockedCount: 0,
+                        winCount: 0,
+                    };
+                }
+                
+                teamData[assigneeLogin].issues.push(issue);
+                
+                const workType = categorizeIssue(issue);
+                teamData[assigneeLogin].workBreakdown[workType]++;
+                
+                const labels = issue.labels.map(l => l.name.toLowerCase());
+                if (labels.includes(CONFIG.STATUS_LABELS.blocked.toLowerCase())) {
+                    teamData[assigneeLogin].blockedCount++;
+                }
+                if (labels.includes(CONFIG.STATUS_LABELS.win.toLowerCase())) {
+                    teamData[assigneeLogin].winCount++;
+                }
+            });
         }
     });
 }
@@ -277,8 +314,14 @@ function categorizeIssue(issue) {
 
 function updateSummaryCards() {
     const openIssues = allIssues.filter(i => i.state === 'open');
-    const assignedIssues = openIssues.filter(i => i.assignee);
-    const unassignedIssues = openIssues.filter(i => !i.assignee);
+    
+    // Count assigned/unassigned based on assignees array
+    const assignedIssues = openIssues.filter(i => 
+        (i.assignees && i.assignees.length > 0) || i.assignee
+    );
+    const unassignedIssues = openIssues.filter(i => 
+        (!i.assignees || i.assignees.length === 0) && !i.assignee
+    );
     
     let projectCount = 0;
     let enhancementCount = 0;
@@ -579,8 +622,11 @@ function renderIssues(issues) {
     
     container.innerHTML = issues.map(issue => {
         const workType = categorizeIssue(issue);
-        const assigneeLogin = issue.assignee ? issue.assignee.login : 'Unassigned';
-        const assigneeName = assigneeLogin !== 'Unassigned' ? getDisplayName(assigneeLogin) : 'Unassigned';
+        
+        // Get all assignees
+        const assignees = issue.assignees && issue.assignees.length > 0 
+            ? issue.assignees 
+            : (issue.assignee ? [issue.assignee] : []);
         
         // Check for blocked and win labels
         const labels = issue.labels.map(l => l.name.toLowerCase());
@@ -599,10 +645,11 @@ function renderIssues(issues) {
                         </div>
                         <div class="issue-meta">
                             <div class="issue-assignee">
-                                ${issue.assignee ? `
-                                    <img src="${issue.assignee.avatar_url}" alt="${assigneeName}" class="assignee-avatar">
-                                    <span>${assigneeName}</span>
-                                ` : '<span>Unassigned</span>'}
+                                ${assignees.length > 0 ? assignees.map(assignee => {
+                                    const displayName = getDisplayName(assignee.login);
+                                    return `<img src="${assignee.avatar_url}" alt="${displayName}" class="assignee-avatar" title="${displayName}">`;
+                                }).join('') : '<span>Unassigned</span>'}
+                                ${assignees.length > 0 ? `<span>${assignees.map(a => getDisplayName(a.login)).join(', ')}</span>` : ''}
                             </div>
                             <div class="issue-labels">
                                 ${issue.labels.map(label => `
@@ -621,9 +668,23 @@ function renderIssues(issues) {
 }
 
 function updateFilterOptions() {
-    // Update assignee filter with preferred names
+    // Update assignee filter with preferred names - collect all unique assignees
     const assigneeFilter = document.getElementById('filterAssignee');
-    const assignees = [...new Set(allIssues.map(i => i.assignee ? i.assignee.login : 'Unassigned'))];
+    const assigneeSet = new Set();
+    
+    allIssues.forEach(issue => {
+        const assignees = issue.assignees && issue.assignees.length > 0 
+            ? issue.assignees 
+            : (issue.assignee ? [issue.assignee] : []);
+        
+        if (assignees.length === 0) {
+            assigneeSet.add('Unassigned');
+        } else {
+            assignees.forEach(assignee => assigneeSet.add(assignee.login));
+        }
+    });
+    
+    const assignees = Array.from(assigneeSet).sort();
     
     assigneeFilter.innerHTML = '<option value="">All Team Members</option>' +
         assignees.map(assigneeLogin => {
@@ -648,8 +709,15 @@ function filterIssues() {
     
     if (assigneeFilter) {
         filtered = filtered.filter(i => {
-            const assignee = i.assignee ? i.assignee.login : 'Unassigned';
-            return assignee === assigneeFilter;
+            const assignees = i.assignees && i.assignees.length > 0 
+                ? i.assignees 
+                : (i.assignee ? [i.assignee] : []);
+            
+            if (assigneeFilter === 'Unassigned') {
+                return assignees.length === 0;
+            }
+            
+            return assignees.some(assignee => assignee.login === assigneeFilter);
         });
     }
     

@@ -387,10 +387,22 @@ header h1 {
     color: var(--text-secondary);
 }
 
+.issue-assignee {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .assignee-avatar {
     width: 24px;
     height: 24px;
     border-radius: 50%;
+    border: 2px solid var(--surface);
+    margin-right: -8px;
+}
+
+.assignee-avatar:last-of-type {
+    margin-right: 0.5rem;
 }
 
 .issue-labels {

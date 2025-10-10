@@ -9,17 +9,20 @@ A beautiful, real-time dashboard for visualizing team capacity and work distribu
 
 ## 🌟 Features
 
-- **Label-Based Filtering**: Only tracks issues with `project` or `enhancement` labels
-- **Blocked Work Tracking**: Identifies blocked work needing manager intervention
-- **Win Highlighting**: Highlights high-value work items
-- **Real-time Updates**: Automatically refreshes when issues are created, edited, or closed
-- **Date Filtering**: Filter issues by last updated date to focus on recent work
-- **Team Capacity Visualization**: See at-a-glance who's working on what
-- **Work Type Distribution**: Visualize projects vs enhancements vs other work
+- **Multiple Assignees Support**: Full support for GitHub's multiple assignees feature with overlapping avatar display
+- **Smart Issue Categorization**: Fetches all issues, categorizes by labels in the dashboard
+- **Blocked Work Tracking**: Identifies blocked work needing manager intervention with visual indicators
+- **Win Highlighting**: Highlights high-value work items with gold badges
+- **Real-time Updates**: Automatically refreshes when issues are created, edited, closed, or assigned
+- **Date Filtering**: Filter issues by last updated date to focus on recent work (configured via TOML)
+- **Team Capacity Visualization**: See at-a-glance who's working on what with semi-transparent bar chart
+- **Work Type Distribution**: Visualize projects vs enhancements vs other work with doughnut chart
+- **Interactive Workload Heatmap**: Bubble chart with semi-transparent colors and hover effects
 - **Name Mapping**: Map GitHub usernames to preferred display names
 - **Dark/Light Theme**: Toggle between themes with automatic system preference detection
 - **Manual Refresh**: Force data reload with cache-busting
 - **Filterable Issue List**: Filter by assignee, label, or state
+- **Hover Effects**: Team member cards with smooth raise and zoom animations
 
 ## 🚀 Quick Start
 
@@ -57,7 +60,7 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
    Edit `docs/config.toml` to define work categories and special labels:
 
    ```toml
-   # Work Type Labels - Only these labels are tracked
+   # Work Type Labels - Used for categorization in the dashboard
    [work-types]
    project = ["project"]
    enhancement = ["enhancement"]
@@ -75,33 +78,35 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
    win = "10b981"          # Green (indicator color)
    ```
 
-5. **Create Issues**:
-   - Add `project` or `enhancement` label to track issues
+5. **Create and Assign Issues**:
+   - Create issues and assign to one or more team members
+   - Add `project` or `enhancement` labels for categorization
    - Optionally add `blocked` label for blocked work
    - Optionally add `win` label for high-value work
-   - Issues without `project` or `enhancement` labels will be ignored
+   - Issues without labels will appear under "Other" category
 
 ## 🔄 How It Works
 
-1. **GitHub Actions Workflow** (`.github/workflows/deploy.yml`):
-   - Triggers on issue events (opened, edited, closed, labeled, etc.)
-   - Reads date filter from `config.toml` under `[issues-api]` section
-   - Fetches **only** issues with `project` or `enhancement` labels via GitHub API
+1. **GitHub Actions Workflow** (`.github/workflows/dashboard.yml`):
+   - Triggers on issue events (opened, edited, closed, labeled, assigned, etc.)
+   - Installs `dasel` for TOML parsing
+   - Reads date filter from `config.toml` using `dasel` (`.issues-api.since`)
+   - Fetches **all issues** (no label filtering) via GitHub API
    - Uses `since` parameter for date filtering
    - Paginates through all results (100 issues per page)
-   - Removes duplicates (issues with both labels)
-   - Tracks blocked and win counts
+   - Counts issues by category (project, enhancement, blocked, win)
    - Saves to `docs/data/issues.json`
-   - Generates deployment summary with issue counts, blocked/win stats
+   - Generates deployment summary with issue counts and stats
    - Deploys to GitHub Pages
 
 2. **Dashboard** (`docs/index.html` + `docs/assets/script/app.js`):
    - Loads configuration from `docs/config.toml`
    - Fetches `issues.json` with cache-busting
-   - Categorizes issues by work type
+   - Categorizes issues by work type (project, enhancement, or other)
+   - Handles multiple assignees with overlapping avatar display
    - Identifies blocked and win items
-   - Renders charts using Chart.js
-   - Displays team member cards with blocked/win indicators
+   - Renders charts using Chart.js with semi-transparent colors
+   - Displays team member cards with hover effects and blocked/win indicators
    - Shows filterable issue list with visual status badges
 
 ## 📊 Dashboard Components
@@ -134,10 +139,12 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
 **Right Column (Stacked)**:
 
 - **Team Capacity Overview**: Bar chart showing open issues per team member
+  - Semi-transparent bars (0.5 opacity) with solid borders
   - Uses dynamic primary color from theme
   - Shows preferred names from config
   
 - **Team Workload Heatmap**: Bubble chart visualization
+  - Semi-transparent bubbles (0.5 opacity) for modern design
   - Bubble size represents workload (number of open issues)
   - Color intensity indicates workload level:
     - **Green**: Low workload (0-30% of max)
@@ -145,54 +152,59 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
     - **Red**: High workload (60-100% of max)
   - Team member names displayed at 45° angle
   - Interactive tooltips with exact issue counts
-  - Optimized layout with proper padding to prevent bubble clipping
+  - Optimized layout with proper padding (60px top, 40px sides) to prevent bubble clipping
+  - Y-axis range: -1.5 to 1.5 for balanced visualization
 
 ### Team Member Details
 
 - Individual cards for each team member with assigned issues
 - Avatar, preferred name, and open/closed issue counts
+- **Multiple assignees** displayed with overlapping avatars (when an issue has multiple assignees)
 - Work breakdown by type (Project, Enhancement, Other)
 - **Blocked work indicator** (red badge with ban icon, right-aligned)
 - **Win work indicator** (gold badge with trophy icon, right-aligned)
+- **Smooth hover effects**: Cards raise and zoom slightly on hover (300ms transition)
 
 ### Issues List
 
 - All tracked issues displayed with full details
-- Assignee with avatar and preferred name
+- **Multiple assignees support**: Issues can have multiple assignees with overlapping avatar display
+- Assignee avatars with preferred names
 - All labels with original GitHub colors
 - **Visual blocked badge** (red "BLOCKED" text with ban icon)
 - **Visual win badge** (gold "WIN" text with trophy icon)
 - State indicator (open/closed)
 - Filterable by:
-  - Team member (using preferred names)
+  - Team member (using preferred names) - matches any assignee
   - Label
   - State (open/closed/all)
 
 ## 🛠️ Technology Stack
 
 - **Frontend**: Vanilla JavaScript, HTML5, CSS3
-- **Charts**: Chart.js 4.4.0
+- **Charts**: Chart.js 4.4.0 (with semi-transparent styling and animations)
 - **Icons**: Font Awesome 6.4.2
-- **Config Format**: TOML
+- **Config Format**: TOML (parsed by dasel in GitHub Actions)
+- **Config Parser**: dasel (latest) for TOML parsing in workflow
 - **Deployment**: GitHub Actions + GitHub Pages
-- **API**: GitHub REST API v3
+- **API**: GitHub REST API v3 with multiple assignees support
 
 ## 📝 Label Strategy
 
-The dashboard uses a focused label strategy:
+The dashboard uses a flexible label strategy:
 
-### Work Type Labels (Required)
+### Work Type Labels (Optional)
 
-Issues **must** have one of these labels to appear on the dashboard:
+These labels are used for categorization in the dashboard:
 
 - **`project`**: Major projects, initiatives, or feature development
 - **`enhancement`**: Improvements, POCs, tech debt removal, performance work
 
-Issues without these labels are **not tracked**.
+Issues without these labels are categorized as **"Other"** in the Work Distribution chart.
 
 ### Status Labels (Optional)
 
-These labels can be added to any tracked issue:
+These labels can be added to any issue:
 
 - **`blocked`**: Work is blocked and needs manager intervention or escalation
   - Displays in red on dashboard
@@ -200,7 +212,7 @@ These labels can be added to any tracked issue:
   - Shows on team member cards
 
 - **`win`**: High-value work that delivers significant impact
-  - Displays in green on dashboard
+  - Displays in gold on dashboard
   - Counted separately in summary cards
   - Shows on team member cards
 
@@ -209,7 +221,8 @@ These labels can be added to any tracked issue:
 - `project` + `blocked` = Blocked project work
 - `enhancement` + `win` = High-value enhancement
 - `project` + `blocked` + `win` = Blocked high-value project
-- Neither `project` nor `enhancement` = Not tracked (ignored)
+- No labels = Appears under "Other" category
+- Both `project` + `enhancement` = Appears under "Other" category
 
 ## 🎨 Theming
 
@@ -229,7 +242,7 @@ The dashboard supports both light and dark themes:
 # Only show issues updated after this date (ISO 8601 format)
 since = "2025-07-01T00:00:00Z"
 
-# Work type mappings - ONLY these labels are tracked
+# Work type mappings - Used for categorization
 [work-types]
 project = ["project"]
 enhancement = ["enhancement"]
@@ -243,7 +256,7 @@ win = "win"            # High value-add work
 [colors]
 project = "02cecb"      # Teal
 enhancement = "7209b7"  # Purple
-other = "6b7280"        # Gray (for issues with both labels)
+other = "6b7280"        # Gray (for issues with both labels or no work type label)
 blocked = "ef4444"      # Red (for blocked indicator)
 win = "ffbf00"          # Gold (for win indicator)
 
@@ -269,19 +282,19 @@ Deployment typically takes 30-60 seconds.
 .
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml        # Deployment workflow with label filtering
+│       └── dashboard.yml     # Deployment workflow (fetches all issues, uses dasel for TOML parsing)
 ├── docs/                     # GitHub Pages root
 │   ├── assets/
 │   │   ├── css/
-│   │   │   └── main.css     # Styles with theme support
+│   │   │   └── main.css     # Styles with theme support and hover effects
 │   │   ├── img/
 │   │   │   └── favicon.ico  # Dashboard icon
 │   │   └── script/
-│   │       └── app.js       # Main application logic
+│   │       └── app.js       # Main application logic with multiple assignees support
 │   ├── data/                # Created by workflow
 │   │   └── issues.json      # Fetched issues data
-│   ├── config.toml          # Dashboard configuration
-│   └── index.html           # Dashboard UI
+│   ├── config.toml          # Dashboard configuration (parsed by dasel)
+│   └── index.html           # Dashboard UI with stacked chart layout
 ├── .gitignore
 └── README.md
 ```
@@ -295,10 +308,10 @@ Deployment typically takes 30-60 seconds.
 
 ## 🤝 Contributing
 
-1. Create issues with `project` or `enhancement` labels for tracking
-2. Add `blocked` label when work is blocked
-3. Add `win` label for high-value work
-4. Assign issues to team members
+1. Create issues with optional `project` or `enhancement` labels for categorization
+2. Assign issues to one or more team members (multiple assignees supported)
+3. Add `blocked` label when work is blocked
+4. Add `win` label for high-value work
 5. Dashboard updates automatically on issue changes
 
 ## 📄 License

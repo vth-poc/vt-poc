@@ -32,6 +32,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Install dasel for TOML parsing
+        run: |
+          echo "📦 Installing dasel..."
+          curl -sSL https://github.com/TomWright/dasel/releases/latest/download/dasel_linux_amd64 -o dasel
+          chmod +x dasel
+          sudo mv dasel /usr/local/bin/dasel
+
       - name: Checkout
         uses: actions/checkout@v4
       
@@ -44,12 +51,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Fetching issues from ${{ github.repository }}..."
-
-          # Install dasel for TOML parsing
-          echo "📦 Installing dasel..."
-          curl -sSL https://github.com/TomWright/dasel/releases/latest/download/dasel_linux_amd64 -o dasel
-          chmod +x dasel
-          sudo mv dasel /usr/local/bin/dasel
 
           # Extract 'since' date from config.toml using dasel
           SINCE_DATE=$(dasel -f docs/config.toml '.issues-api.since' -w plain)

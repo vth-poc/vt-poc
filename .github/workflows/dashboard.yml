@@ -85,8 +85,20 @@ jobs:
               break
             fi
             
+            # Filter response to only include required fields for dashboard
+            FILTERED_RESPONSE=$(echo "$RESPONSE" | jq '[.[] | {
+              number: .number,
+              title: .title,
+              state: .state,
+              html_url: .html_url,
+              labels: [.labels[] | {name: .name, color: .color}],
+              assignee: (.assignee | if . then {login: .login, avatar_url: .avatar_url} else null end),
+              assignees: [.assignees[] | {login: .login, avatar_url: .avatar_url}],
+              pull_request: .pull_request
+            }]')
+            
             # Merge with existing data
-            jq -s '.[0] + .[1]' "$OUTPUT_FILE" <(echo "$RESPONSE") > "$TEMP_FILE"
+            jq -s '.[0] + .[1]' "$OUTPUT_FILE" <(echo "$FILTERED_RESPONSE") > "$TEMP_FILE"
             mv "$TEMP_FILE" "$OUTPUT_FILE"
 
             COUNT=$(echo "$RESPONSE" | jq length)

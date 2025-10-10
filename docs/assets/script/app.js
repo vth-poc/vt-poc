@@ -463,7 +463,7 @@ function updateWorkloadHeatmap() {
         type: 'bubble',
         data: {
             datasets: [{
-                label: 'Open Issues',
+                label: 'Open Work Items',
                 data: workloadData,
                 backgroundColor: bubbleColors,
                 borderColor: bubbleColors.map(c => c.replace(/[\d.]+\)$/, '1)')), // Solid border
@@ -473,7 +473,15 @@ function updateWorkloadHeatmap() {
         options: {
             responsive: true,
             maintainAspectRatio: true,
-            aspectRatio: 4,
+            aspectRatio: 3,
+            layout: {
+                padding: {
+                    top: 40,
+                    bottom: 20,
+                    left: 20,
+                    right: 20
+                }
+            },
             plugins: {
                 legend: {
                     display: false,
@@ -505,8 +513,8 @@ function updateWorkloadHeatmap() {
                 },
                 y: {
                     display: false,
-                    min: -0.5,
-                    max: 0.5
+                    min: -1,
+                    max: 1
                 }
             }
         }

@@ -491,7 +491,7 @@ function updateWorkloadHeatmap() {
                     callbacks: {
                         label: function(context) {
                             const data = context.raw;
-                            return `${data.name}: ${data.count} open issue${data.count !== 1 ? 's' : ''}`;
+                            return `${data.name}: ${data.count} open work item${data.count !== 1 ? 's' : ''}`;
                         }
                     }
                 }

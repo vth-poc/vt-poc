@@ -127,7 +127,7 @@ jobs:
           echo "- **Closed Issues:** ${{ steps.fetch-issues.outputs.closed_issues }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Work Type Breakdown" >> $GITHUB_STEP_SUMMARY
-          echo "- **� Project Issues:** ${{ steps.fetch-issues.outputs.project_issues }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **📐 Project Issues:** ${{ steps.fetch-issues.outputs.project_issues }}" >> $GITHUB_STEP_SUMMARY
           echo "- **💡 Enhancement Issues:** ${{ steps.fetch-issues.outputs.enhancement_issues }}" >> $GITHUB_STEP_SUMMARY
           echo "- **🚫 Blocked Issues:** ${{ steps.fetch-issues.outputs.blocked_issues }}" >> $GITHUB_STEP_SUMMARY
           echo "- **🏆 Win Issues:** ${{ steps.fetch-issues.outputs.win_issues }}" >> $GITHUB_STEP_SUMMARY

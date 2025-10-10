@@ -45,8 +45,14 @@ jobs:
         run: |
           echo "Fetching issues from ${{ github.repository }}..."
 
-          # Extract 'since' date from config.toml
-          SINCE_DATE=$(grep -A 3 '\[issues-api\]' docs/config.toml | grep 'since' | sed 's/.*"\(.*\)".*/\1/')
+          # Install dasel for TOML parsing
+          echo "📦 Installing dasel..."
+          curl -sSL https://github.com/TomWright/dasel/releases/latest/download/dasel_linux_amd64 -o dasel
+          chmod +x dasel
+          sudo mv dasel /usr/local/bin/dasel
+
+          # Extract 'since' date from config.toml using dasel
+          SINCE_DATE=$(dasel -f docs/config.toml '.issues-api.since' -w plain)
           if [ -z "$SINCE_DATE" ]; then
             echo "❌ 'since' date not found in config.toml. Please ensure it is set under [issues-api]."
             exit 1

@@ -30,3 +30,6 @@ win = "ffbf00"          # Gold (for win indicator)
 [[member]]
 git-name = "vthai-wtg"
 preferred-name = "Vinh"
+[[member]]
+git-name = "v-thai"
+preferred-name = "GithubMcGitface"

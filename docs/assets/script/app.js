@@ -632,23 +632,27 @@ function renderTeamMembers() {
                     </div>
                 </div>
                 <div class="work-breakdown">
-                    ${Object.entries(member.workBreakdown)
-                        .filter(([type, count]) => count > 0)
-                        .map(([type, count]) => `
-                            <span class="work-badge ${type}">
-                                ${type.charAt(0).toUpperCase() + type.slice(1)}: ${count}
+                    <div class="work-types">
+                        ${Object.entries(member.workBreakdown)
+                            .filter(([type, count]) => count > 0)
+                            .map(([type, count]) => `
+                                <span class="work-badge ${type}">
+                                    ${type.charAt(0).toUpperCase() + type.slice(1)}: ${count}
+                                </span>
+                            `).join('')}
+                    </div>
+                    <div class="status-badges">
+                        ${member.blockedCount > 0 ? `
+                            <span class="work-badge blocked">
+                                <i class="fa-solid fa-ban"></i> Blocked: ${member.blockedCount}
                             </span>
-                        `).join('')}
-                    ${member.blockedCount > 0 ? `
-                        <span class="work-badge blocked">
-                            <i class="fa-solid fa-ban"></i> Blocked: ${member.blockedCount}
-                        </span>
-                    ` : ''}
-                    ${member.winCount > 0 ? `
-                        <span class="work-badge win">
-                            <i class="fa-solid fa-trophy"></i> Wins: ${member.winCount}
-                        </span>
-                    ` : ''}
+                        ` : ''}
+                        ${member.winCount > 0 ? `
+                            <span class="work-badge win">
+                                <i class="fa-solid fa-trophy"></i> Wins: ${member.winCount}
+                            </span>
+                        ` : ''}
+                    </div>
                 </div>
             </div>
         `;

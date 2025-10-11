@@ -311,12 +311,14 @@ header h1 {
     color: var(--badge-blocked-text);
     border: 1px solid var(--badge-blocked-border);
     margin-left: auto;
+    animation: gentleFlash 2s ease-in-out infinite;
 }
 
 .work-badge.win {
     background: var(--badge-win-bg);
     color: var(--badge-win-text);
     border: 1px solid var(--badge-win-border);
+    animation: gentleZoom 2.5s ease-in-out infinite;
 }
 
 .filter-controls {
@@ -526,6 +528,28 @@ header h1 {
 
 .blocked-flash {
     animation: redBorderFlash 2s ease-in-out infinite;
+}
+
+/* Gentle flash animation for blocked badges */
+@keyframes gentleFlash {
+    0%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
+    }
+    50% {
+        opacity: 0.75;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+    }
+}
+
+/* Gentle zoom animation for win badges */
+@keyframes gentleZoom {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 @media (max-width: 768px) {

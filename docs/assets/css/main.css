@@ -321,12 +321,13 @@ header h1 {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     
-    /* Clip path for vertical ribbon with bottom fold */
+    /* Clip path for vertical ribbon with angled fold at bottom (like horizontal ribbon) */
     clip-path: polygon(
         0 0,
         100% 0,
         100% calc(100% - var(--f)),
-        50% 100%,
+        calc(100% - var(--f)) 100%,
+        calc(100% - var(--f)) calc(100% - var(--f)),
         0 calc(100% - var(--f))
     );
     
@@ -338,8 +339,9 @@ header h1 {
     border: none;
     letter-spacing: 0.5px;
     
-    /* Multi-layered shadows for 3D effect */
+    /* Multi-layered shadows for 3D effect with folded corner shadow */
     box-shadow: 
+        0 calc(var(--f)) 0 inset rgba(0, 0, 0, 0.35),
         0 4px 8px rgba(239, 68, 68, 0.4),
         0 2px 4px rgba(0, 0, 0, 0.3),
         inset 1px 0 0 rgba(255, 255, 255, 0.2),
@@ -360,12 +362,13 @@ header h1 {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     
-    /* Clip path for vertical ribbon with bottom fold */
+    /* Clip path for vertical ribbon with angled fold at bottom (like horizontal ribbon) */
     clip-path: polygon(
         0 0,
         100% 0,
         100% calc(100% - var(--f)),
-        50% 100%,
+        calc(100% - var(--f)) 100%,
+        calc(100% - var(--f)) calc(100% - var(--f)),
         0 calc(100% - var(--f))
     );
     
@@ -377,8 +380,9 @@ header h1 {
     border: none;
     letter-spacing: 0.5px;
     
-    /* Multi-layered shadows for 3D effect */
+    /* Multi-layered shadows for 3D effect with folded corner shadow */
     box-shadow: 
+        0 calc(var(--f)) 0 inset rgba(0, 0, 0, 0.35),
         0 4px 8px rgba(255, 191, 0, 0.5),
         0 2px 4px rgba(0, 0, 0, 0.3),
         inset 1px 0 0 rgba(255, 255, 255, 0.4),

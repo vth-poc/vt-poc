@@ -344,6 +344,15 @@ function updateSummaryCards() {
     document.getElementById('enhancementCount').textContent = enhancementCount;
     document.getElementById('blockedCount').textContent = blockedCount;
     document.getElementById('winCount').textContent = winCount;
+    
+    // Add gentle glow animation to Wins card if count > 0
+    const winCountElement = document.getElementById('winCount');
+    const winsCard = winCountElement.closest('.card');
+    if (winCount > 0) {
+        winsCard.classList.add('wins-glow');
+    } else {
+        winsCard.classList.remove('wins-glow');
+    }
 }
 
 function updateCharts() {

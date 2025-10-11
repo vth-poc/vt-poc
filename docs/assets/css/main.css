@@ -498,6 +498,20 @@ header h1 {
     margin-top: 1rem;
 }
 
+/* Gentle glow animation for wins card */
+@keyframes gentleGlow {
+    0%, 100% {
+        box-shadow: var(--shadow), 0 0 10px rgba(255, 191, 0, 0.3);
+    }
+    50% {
+        box-shadow: var(--shadow), 0 0 20px rgba(255, 191, 0, 0.5), 0 0 30px rgba(255, 191, 0, 0.2);
+    }
+}
+
+.wins-glow {
+    animation: gentleGlow 2.5s ease-in-out infinite;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem;

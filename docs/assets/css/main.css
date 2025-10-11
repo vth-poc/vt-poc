@@ -320,8 +320,9 @@ header h1 {
     margin-left: 0;
     writing-mode: vertical-rl;
     text-orientation: mixed;
+    border-radius: 0;
     
-    /* Clip path for vertical ribbon with inverted V-point (fishtail/notch) at bottom */
+    /* Clip path for vertical ribbon with square top and inverted V-point (fishtail/notch) at bottom */
     clip-path: polygon(
         0 0,
         100% 0,
@@ -359,8 +360,9 @@ header h1 {
     padding: 0.75rem 0.5rem calc(0.5rem + var(--f)) 0.5rem;
     writing-mode: vertical-rl;
     text-orientation: mixed;
+    border-radius: 0;
     
-    /* Clip path for vertical ribbon with inverted V-point (fishtail/notch) at bottom */
+    /* Clip path for vertical ribbon with square top and inverted V-point (fishtail/notch) at bottom */
     clip-path: polygon(
         0 0,
         100% 0,

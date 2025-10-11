@@ -309,14 +309,14 @@ header h1 {
 }
 
 .work-badge.blocked {
-    --f: 8px; /* control the folded part*/
-    --r: 12px; /* control the ribbon shape */
+    --f: 10px; /* control the folded part*/
+    --r: 15px; /* control the ribbon shape */
     --t: 10px; /* the top offset */
     
     position: absolute;
     top: var(--t);
     right: calc(-1 * var(--f));
-    padding: 0.35rem 0.75rem var(--f) calc(0.75rem + var(--r));
+    padding: 0.5rem 1rem var(--f) calc(1rem + var(--r));
     margin-left: 0;
     clip-path: polygon(
         0 0,
@@ -327,21 +327,29 @@ header h1 {
         0 calc(100% - var(--f)),
         var(--r) calc(50% - var(--f)/2)
     );
-    background: var(--badge-blocked-bg);
-    color: var(--badge-blocked-text);
-    border: 1px solid var(--badge-blocked-border);
-    box-shadow: 0 calc(-1 * var(--f)) 0 inset rgba(0, 0, 0, 0.2);
+    /* Enhanced 3D gradient background */
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #c92a2a 100%);
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    /* Multi-layered shadows for 3D effect */
+    box-shadow: 
+        0 calc(-1 * var(--f)) 0 inset rgba(0, 0, 0, 0.35),
+        0 4px 8px rgba(239, 68, 68, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .work-badge.win {
-    --f: 8px; /* control the folded part*/
-    --r: 12px; /* control the ribbon shape */
-    --t: 50px; /* the top offset - positioned below blocked ribbon */
+    --f: 10px; /* control the folded part*/
+    --r: 15px; /* control the ribbon shape */
+    --t: 55px; /* the top offset - positioned below blocked ribbon */
     
     position: absolute;
     top: var(--t);
     right: calc(-1 * var(--f));
-    padding: 0.35rem 0.75rem var(--f) calc(0.75rem + var(--r));
+    padding: 0.5rem 1rem var(--f) calc(1rem + var(--r));
     clip-path: polygon(
         0 0,
         100% 0,
@@ -351,10 +359,18 @@ header h1 {
         0 calc(100% - var(--f)),
         var(--r) calc(50% - var(--f)/2)
     );
-    background: var(--badge-win-bg);
-    color: var(--badge-win-text);
-    border: 1px solid var(--badge-win-border);
-    box-shadow: 0 calc(-1 * var(--f)) 0 inset rgba(0, 0, 0, 0.2);
+    /* Enhanced 3D gradient background with golden shine */
+    background: linear-gradient(135deg, #ffd93d 0%, #ffbf00 40%, #f39c12 100%);
+    color: #5a3e00;
+    font-weight: 600;
+    border: none;
+    /* Multi-layered shadows for 3D effect */
+    box-shadow: 
+        0 calc(-1 * var(--f)) 0 inset rgba(0, 0, 0, 0.35),
+        0 4px 8px rgba(255, 191, 0, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
 .filter-controls {

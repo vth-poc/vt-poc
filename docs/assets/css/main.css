@@ -512,6 +512,22 @@ header h1 {
     animation: gentleGlow 2.5s ease-in-out infinite;
 }
 
+/* Gentle red flashing border animation for blocked card */
+@keyframes redBorderFlash {
+    0%, 100% {
+        border-left-color: #ef4444;
+        box-shadow: var(--shadow), -3px 0 8px rgba(239, 68, 68, 0.3);
+    }
+    50% {
+        border-left-color: #dc2626;
+        box-shadow: var(--shadow), -3px 0 15px rgba(239, 68, 68, 0.6), -5px 0 25px rgba(239, 68, 68, 0.3);
+    }
+}
+
+.blocked-flash {
+    animation: redBorderFlash 2s ease-in-out infinite;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem;

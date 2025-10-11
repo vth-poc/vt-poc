@@ -353,6 +353,15 @@ function updateSummaryCards() {
     } else {
         winsCard.classList.remove('wins-glow');
     }
+    
+    // Add gentle red flashing border animation to Blocked card if count > 0
+    const blockedCountElement = document.getElementById('blockedCount');
+    const blockedCard = blockedCountElement.closest('.card');
+    if (blockedCount > 0) {
+        blockedCard.classList.add('blocked-flash');
+    } else {
+        blockedCard.classList.remove('blocked-flash');
+    }
 }
 
 function updateCharts() {

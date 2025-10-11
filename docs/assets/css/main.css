@@ -279,22 +279,6 @@ header h1 {
     gap: 1rem;
     flex-wrap: wrap;
     margin-top: 1rem;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.work-types {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    flex: 1;
-}
-
-.status-badges {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: flex-end;
 }
 
 .work-badge {
@@ -326,6 +310,7 @@ header h1 {
     background: var(--badge-blocked-bg);
     color: var(--badge-blocked-text);
     border: 1px solid var(--badge-blocked-border);
+    margin-left: auto;
 }
 
 .work-badge.win {

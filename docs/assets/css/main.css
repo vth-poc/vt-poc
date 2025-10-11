@@ -321,13 +321,13 @@ header h1 {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     
-    /* Clip path for vertical ribbon with bottom fold */
+    /* Clip path for vertical ribbon with inverted V-point (fishtail/notch) at bottom */
     clip-path: polygon(
         0 0,
         100% 0,
-        100% calc(100% - var(--f)),
-        50% 100%,
-        0 calc(100% - var(--f))
+        100% 100%,
+        50% calc(100% - var(--f)),
+        0 100%
     );
     
     /* Enhanced 3D gradient background */
@@ -360,13 +360,13 @@ header h1 {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     
-    /* Clip path for vertical ribbon with bottom fold */
+    /* Clip path for vertical ribbon with inverted V-point (fishtail/notch) at bottom */
     clip-path: polygon(
         0 0,
         100% 0,
-        100% calc(100% - var(--f)),
-        50% 100%,
-        0 calc(100% - var(--f))
+        100% 100%,
+        50% calc(100% - var(--f)),
+        0 100%
     );
     
     /* Enhanced 3D gradient background with golden shine */

@@ -238,7 +238,6 @@ header h1 {
     margin-bottom: 1rem;
     transition: all 0.3s ease;
     position: relative;
-    overflow: hidden;
 }
 
 .team-member:hover {

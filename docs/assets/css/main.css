@@ -123,6 +123,7 @@ header h1 {
     cursor: pointer;
     font-size: 0.9rem;
     transition: background 0.2s;
+    user-select: none;
 }
 
 .refresh-btn:hover {
@@ -141,6 +142,7 @@ header h1 {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    user-select: none;
 }
 
 .theme-toggle:hover {
@@ -168,6 +170,7 @@ header h1 {
     border-radius: 12px;
     box-shadow: var(--shadow);
     text-align: center;
+    user-select: none;
 }
 
 .card h3 {
@@ -279,6 +282,7 @@ header h1 {
     border-radius: 6px;
     font-size: 0.85rem;
     font-weight: 500;
+    user-select: none;
 }
 
 .work-badge.project {
@@ -458,6 +462,7 @@ header h1 {
     color: var(--text-primary);
     font-size: 0.9rem;
     cursor: pointer;
+    user-select: none;
 }
 
 .issue-item {
@@ -547,6 +552,7 @@ header h1 {
     border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 600;
+    user-select: none;
 }
 
 .issue-state {
@@ -555,6 +561,7 @@ header h1 {
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
+    user-select: none;
 }
 
 .issue-state.open {
@@ -620,6 +627,7 @@ header h1 {
     border-radius: 6px;
     cursor: pointer;
     margin-top: 1rem;
+    user-select: none;
 }
 
 /* Gentle glow animation for wins card */
@@ -669,6 +677,7 @@ header h1 {
     color: #ef4444;
     font-weight: bold;
     animation: blockedBadgeFlash 2s ease-in-out infinite;
+    user-select: none;
 }
 
 /* Zoom animation for WIN badge in work items */
@@ -689,6 +698,7 @@ header h1 {
     font-weight: bold;
     display: inline-block;
     animation: winBadgeZoom 2s ease-in-out infinite;
+    user-select: none;
 }
 
 @media (max-width: 768px) {

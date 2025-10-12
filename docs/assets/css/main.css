@@ -25,12 +25,6 @@
     --badge-enhancement-text: #4a0572;
     --badge-other-bg: #e5e7eb;
     --badge-other-text: #374151;
-    --badge-blocked-bg: #fee2e2;
-    --badge-blocked-text: #991b1b;
-    --badge-blocked-border: #ef4444;
-    --badge-win-bg: #fef9e7;
-    --badge-win-text: #856404;
-    --badge-win-border: #ffbf00;
     
     /* Issue state colors */
     --issue-open-bg: #dcfce7;
@@ -66,12 +60,6 @@
     --badge-enhancement-text: #e9c7ff;
     --badge-other-bg: #374151;
     --badge-other-text: #d1d5db;
-    --badge-blocked-bg: #7f1d1d;
-    --badge-blocked-text: #fecaca;
-    --badge-blocked-border: #ef4444;
-    --badge-win-bg: #78350f;
-    --badge-win-text: #fde68a;
-    --badge-win-border: #ffbf00;
     
     /* Issue state colors */
     --issue-open-bg: #064e3b;

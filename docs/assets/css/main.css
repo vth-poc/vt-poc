@@ -395,6 +395,7 @@ header h1 {
     /* Ribbon sway animation */
     animation: ribbonSwayBlocked 3s ease-in-out infinite;
     transform-origin: top center;
+    cursor: default;
 }
 
 .work-badge.win {
@@ -439,6 +440,7 @@ header h1 {
     /* Ribbon sway animation */
     animation: ribbonSwayWin 3.5s ease-in-out infinite;
     transform-origin: top center;
+    cursor: default;
 }
 
 .filter-controls {

@@ -684,7 +684,7 @@ function renderIssues(issues) {
                             <a href="${issue.html_url}" target="_blank">${issue.title}</a>
                             <span class="issue-number">#${issue.number}</span>
                             ${isBlocked ? '<span class="blocked-badge"><i class="fa-solid fa-ban"></i> BLOCKED</span>' : ''}
-                            ${isWin ? '<span style="margin-left: 8px; color: #ffbf00; font-weight: bold;"><i class="fa-solid fa-trophy"></i> WIN</span>' : ''}
+                            ${isWin ? '<span class="win-badge"><i class="fa-solid fa-trophy"></i> WIN</span>' : ''}
                         </div>
                         <div class="issue-meta">
                             <div class="issue-assignee">

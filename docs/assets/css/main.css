@@ -617,6 +617,26 @@ header h1 {
     animation: blockedBadgeFlash 2s ease-in-out infinite;
 }
 
+/* Zoom animation for WIN badge in work items */
+@keyframes winBadgeZoom {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 0 0 5px rgba(255, 191, 0, 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        text-shadow: 0 0 10px rgba(255, 191, 0, 0.6), 0 0 15px rgba(255, 191, 0, 0.4);
+    }
+}
+
+.win-badge {
+    margin-left: 8px;
+    color: #ffbf00;
+    font-weight: bold;
+    display: inline-block;
+    animation: winBadgeZoom 2s ease-in-out infinite;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem;

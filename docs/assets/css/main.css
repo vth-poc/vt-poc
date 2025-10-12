@@ -315,7 +315,10 @@ header h1 {
             0 15px 30px rgba(0, 0, 0, 0.3),
             0 20px 40px rgba(0, 0, 0, 0.2),
             inset 1px 0 0 rgba(255, 255, 255, 0.3),
-            inset -1px 0 0 rgba(0, 0, 0, 0.3);
+            inset -1px 0 0 rgba(0, 0, 0, 0.3),
+            /* Outer shadow for depth */
+            -6px 0 20px rgba(0, 0, 0, 0.6),
+            -12px 0 35px rgba(0, 0, 0, 0.5);
     }
     25% {
         transform: rotate(1deg);
@@ -326,7 +329,10 @@ header h1 {
             3px 18px 36px rgba(0, 0, 0, 0.4),
             3px 24px 48px rgba(0, 0, 0, 0.25),
             inset 1px 0 0 rgba(255, 255, 255, 0.4),
-            inset -1px 0 0 rgba(0, 0, 0, 0.2);
+            inset -1px 0 0 rgba(0, 0, 0, 0.2),
+            /* Outer shadow for depth */
+            -8px 0 25px rgba(0, 0, 0, 0.7),
+            -15px 0 40px rgba(0, 0, 0, 0.6);
     }
     75% {
         transform: rotate(-1deg);
@@ -337,7 +343,10 @@ header h1 {
             -3px 18px 36px rgba(0, 0, 0, 0.4),
             -3px 24px 48px rgba(0, 0, 0, 0.25),
             inset 1px 0 0 rgba(255, 255, 255, 0.2),
-            inset -1px 0 0 rgba(0, 0, 0, 0.4);
+            inset -1px 0 0 rgba(0, 0, 0, 0.4),
+            /* Outer shadow for depth */
+            -4px 0 20px rgba(0, 0, 0, 0.7),
+            -10px 0 35px rgba(0, 0, 0, 0.6);
     }
 }
 
@@ -352,7 +361,10 @@ header h1 {
             0 15px 30px rgba(0, 0, 0, 0.3),
             0 20px 40px rgba(0, 0, 0, 0.2),
             inset 1px 0 0 rgba(255, 255, 255, 0.5),
-            inset -1px 0 0 rgba(0, 0, 0, 0.2);
+            inset -1px 0 0 rgba(0, 0, 0, 0.2),
+            /* Outer shadow for depth */
+            6px 0 20px rgba(0, 0, 0, 0.6),
+            12px 0 35px rgba(0, 0, 0, 0.5);
     }
     25% {
         transform: rotate(1deg);
@@ -363,7 +375,10 @@ header h1 {
             3px 18px 36px rgba(0, 0, 0, 0.4),
             3px 24px 48px rgba(0, 0, 0, 0.25),
             inset 1px 0 0 rgba(255, 255, 255, 0.6),
-            inset -1px 0 0 rgba(0, 0, 0, 0.1);
+            inset -1px 0 0 rgba(0, 0, 0, 0.1),
+            /* Outer shadow for depth */
+            8px 0 25px rgba(0, 0, 0, 0.7),
+            15px 0 40px rgba(0, 0, 0, 0.6);
     }
     75% {
         transform: rotate(-1deg);
@@ -374,7 +389,10 @@ header h1 {
             -3px 18px 36px rgba(0, 0, 0, 0.4),
             -3px 24px 48px rgba(0, 0, 0, 0.25),
             inset 1px 0 0 rgba(255, 255, 255, 0.4),
-            inset -1px 0 0 rgba(0, 0, 0, 0.3);
+            inset -1px 0 0 rgba(0, 0, 0, 0.3),
+            /* Outer shadow for depth */
+            4px 0 20px rgba(0, 0, 0, 0.7),
+            10px 0 35px rgba(0, 0, 0, 0.6);
     }
 }
 
@@ -419,9 +437,9 @@ header h1 {
         inset 1px 0 0 rgba(255, 255, 255, 0.3),
         inset -1px 0 0 rgba(0, 0, 0, 0.3),
         /* Outer shadow for depth */
-        -4px 0 15px rgba(0, 0, 0, 0.4),
-        -8px 0 25px rgba(0, 0, 0, 0.3);
-    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.4)) drop-shadow(4px 8px 12px rgba(0, 0, 0, 0.2)) drop-shadow(-3px 0 8px rgba(0, 0, 0, 0.3));
+        -6px 0 20px rgba(0, 0, 0, 0.6),
+        -12px 0 35px rgba(0, 0, 0, 0.5);
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5)) drop-shadow(4px 8px 12px rgba(0, 0, 0, 0.4)) drop-shadow(-5px 0 12px rgba(0, 0, 0, 0.5));
     z-index: 1;
     
     /* Ribbon sway animation */
@@ -470,9 +488,9 @@ header h1 {
         inset 1px 0 0 rgba(255, 255, 255, 0.5),
         inset -1px 0 0 rgba(0, 0, 0, 0.2),
         /* Outer shadow for depth */
-        4px 0 15px rgba(0, 0, 0, 0.4),
-        8px 0 25px rgba(0, 0, 0, 0.3);
-    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.4)) drop-shadow(4px 8px 12px rgba(0, 0, 0, 0.2)) drop-shadow(3px 0 8px rgba(0, 0, 0, 0.3));
+        6px 0 20px rgba(0, 0, 0, 0.6),
+        12px 0 35px rgba(0, 0, 0, 0.5);
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.5)) drop-shadow(4px 8px 12px rgba(0, 0, 0, 0.4)) drop-shadow(5px 0 12px rgba(0, 0, 0, 0.5));
     z-index: 2;
     
     /* Ribbon sway animation */

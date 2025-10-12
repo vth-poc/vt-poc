@@ -529,12 +529,14 @@ header h1 {
     gap: 0.5rem;
     font-size: 0.9rem;
     color: var(--text-secondary);
+    cursor: default;
 }
 
 .issue-assignee {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    cursor: default;
 }
 
 .assignee-avatar {

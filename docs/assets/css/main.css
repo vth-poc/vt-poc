@@ -358,7 +358,7 @@ header h1 {
     
     position: absolute;
     top: 0;
-    right: 75px; /* Position to the left of win ribbon */
+    right: 85px; /* Position to the left of win ribbon with more spacing */
     width: var(--w);
     padding: 0.75rem 0.5rem calc(0.5rem + var(--f)) 0.5rem;
     margin-left: 0;

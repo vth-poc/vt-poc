@@ -308,6 +308,62 @@ header h1 {
     color: var(--badge-other-text);
 }
 
+/* Realistic ribbon sway animation for blocked ribbon */
+@keyframes ribbonSwayBlocked {
+    0%, 100% {
+        transform: rotate(0deg);
+        box-shadow: 
+            0 4px 8px rgba(239, 68, 68, 0.4),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.2),
+            inset -1px 0 0 rgba(0, 0, 0, 0.2);
+    }
+    25% {
+        transform: rotate(1deg);
+        box-shadow: 
+            2px 5px 10px rgba(239, 68, 68, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.25),
+            inset -1px 0 0 rgba(0, 0, 0, 0.15);
+    }
+    75% {
+        transform: rotate(-1deg);
+        box-shadow: 
+            -2px 5px 10px rgba(239, 68, 68, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.15),
+            inset -1px 0 0 rgba(0, 0, 0, 0.25);
+    }
+}
+
+/* Realistic ribbon sway animation for win ribbon */
+@keyframes ribbonSwayWin {
+    0%, 100% {
+        transform: rotate(0deg);
+        box-shadow: 
+            0 4px 8px rgba(255, 191, 0, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.4),
+            inset -1px 0 0 rgba(0, 0, 0, 0.1);
+    }
+    25% {
+        transform: rotate(1deg);
+        box-shadow: 
+            2px 5px 10px rgba(255, 191, 0, 0.6),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.5),
+            inset -1px 0 0 rgba(0, 0, 0, 0.05);
+    }
+    75% {
+        transform: rotate(-1deg);
+        box-shadow: 
+            -2px 5px 10px rgba(255, 191, 0, 0.6),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.3),
+            inset -1px 0 0 rgba(0, 0, 0, 0.15);
+    }
+}
+
 .work-badge.blocked {
     --f: 10px; /* control the folded part at bottom */
     --w: 50px; /* ribbon width */
@@ -347,6 +403,10 @@ header h1 {
         inset -1px 0 0 rgba(0, 0, 0, 0.2);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
     z-index: 1;
+    
+    /* Ribbon sway animation */
+    animation: ribbonSwayBlocked 3s ease-in-out infinite;
+    transform-origin: top center;
 }
 
 .work-badge.win {
@@ -387,6 +447,10 @@ header h1 {
         inset -1px 0 0 rgba(0, 0, 0, 0.1);
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
     z-index: 2;
+    
+    /* Ribbon sway animation */
+    animation: ribbonSwayWin 3.5s ease-in-out infinite;
+    transform-origin: top center;
 }
 
 .filter-controls {

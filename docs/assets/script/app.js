@@ -416,6 +416,12 @@ function updateWorkTypeChart() {
             plugins: {
                 legend: {
                     position: 'bottom',
+                    onHover: (event) => {
+                        event.native.target.style.cursor = 'pointer';
+                    },
+                    onLeave: (event) => {
+                        event.native.target.style.cursor = 'default';
+                    }
                 }
             }
         }

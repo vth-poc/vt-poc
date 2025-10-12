@@ -221,7 +221,6 @@ header h1 {
     border-radius: 12px;
     box-shadow: var(--shadow);
     margin-bottom: 2rem;
-    overflow: visible; /* Allow ribbon shadows to extend beyond section */
 }
 
 .team-section h2, .issues-section h2 {
@@ -239,7 +238,7 @@ header h1 {
     margin-bottom: 1rem;
     transition: all 0.3s ease;
     position: relative;
-    overflow: visible; /* Allow ribbon shadows to extend beyond card */
+    overflow: hidden;
 }
 
 .team-member:hover {
@@ -311,47 +310,26 @@ header h1 {
     0%, 100% {
         transform: rotate(0deg);
         box-shadow: 
-            0 6px 12px rgba(239, 68, 68, 0.6),
-            0 3px 6px rgba(0, 0, 0, 0.5),
-            0 10px 20px rgba(0, 0, 0, 0.4),
-            0 15px 30px rgba(0, 0, 0, 0.3),
-            0 20px 40px rgba(0, 0, 0, 0.2),
-            inset 1px 0 0 rgba(255, 255, 255, 0.3),
-            inset -1px 0 0 rgba(0, 0, 0, 0.3),
-            /* Dramatic outer shadow extending to the left */
-            -10px 0 25px rgba(0, 0, 0, 0.8),
-            -20px 0 45px rgba(0, 0, 0, 0.6),
-            -30px 0 60px rgba(0, 0, 0, 0.4);
+            0 4px 8px rgba(239, 68, 68, 0.4),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.2),
+            inset -1px 0 0 rgba(0, 0, 0, 0.2);
     }
     25% {
         transform: rotate(1deg);
         box-shadow: 
-            3px 8px 15px rgba(239, 68, 68, 0.7),
-            2px 4px 8px rgba(0, 0, 0, 0.6),
-            3px 12px 24px rgba(0, 0, 0, 0.5),
-            3px 18px 36px rgba(0, 0, 0, 0.4),
-            3px 24px 48px rgba(0, 0, 0, 0.25),
-            inset 1px 0 0 rgba(255, 255, 255, 0.4),
-            inset -1px 0 0 rgba(0, 0, 0, 0.2),
-            /* Dramatic outer shadow extending to the left */
-            -12px 0 30px rgba(0, 0, 0, 0.85),
-            -25px 0 50px rgba(0, 0, 0, 0.7),
-            -35px 0 65px rgba(0, 0, 0, 0.5);
+            2px 5px 10px rgba(239, 68, 68, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.25),
+            inset -1px 0 0 rgba(0, 0, 0, 0.15);
     }
     75% {
         transform: rotate(-1deg);
         box-shadow: 
-            -3px 8px 15px rgba(239, 68, 68, 0.7),
-            -2px 4px 8px rgba(0, 0, 0, 0.6),
-            -3px 12px 24px rgba(0, 0, 0, 0.5),
-            -3px 18px 36px rgba(0, 0, 0, 0.4),
-            -3px 24px 48px rgba(0, 0, 0, 0.25),
-            inset 1px 0 0 rgba(255, 255, 255, 0.2),
-            inset -1px 0 0 rgba(0, 0, 0, 0.4),
-            /* Dramatic outer shadow extending to the left */
-            -8px 0 20px rgba(0, 0, 0, 0.85),
-            -18px 0 40px rgba(0, 0, 0, 0.7),
-            -28px 0 55px rgba(0, 0, 0, 0.5);
+            -2px 5px 10px rgba(239, 68, 68, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.15),
+            inset -1px 0 0 rgba(0, 0, 0, 0.25);
     }
 }
 
@@ -360,47 +338,26 @@ header h1 {
     0%, 100% {
         transform: rotate(0deg);
         box-shadow: 
-            0 6px 12px rgba(255, 191, 0, 0.7),
-            0 3px 6px rgba(0, 0, 0, 0.5),
-            0 10px 20px rgba(0, 0, 0, 0.4),
-            0 15px 30px rgba(0, 0, 0, 0.3),
-            0 20px 40px rgba(0, 0, 0, 0.2),
-            inset 1px 0 0 rgba(255, 255, 255, 0.5),
-            inset -1px 0 0 rgba(0, 0, 0, 0.2),
-            /* Dramatic outer shadow extending to the right */
-            10px 0 25px rgba(0, 0, 0, 0.8),
-            20px 0 45px rgba(0, 0, 0, 0.6),
-            30px 0 60px rgba(0, 0, 0, 0.4);
+            0 4px 8px rgba(255, 191, 0, 0.5),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.4),
+            inset -1px 0 0 rgba(0, 0, 0, 0.1);
     }
     25% {
         transform: rotate(1deg);
         box-shadow: 
-            3px 8px 15px rgba(255, 191, 0, 0.8),
-            2px 4px 8px rgba(0, 0, 0, 0.6),
-            3px 12px 24px rgba(0, 0, 0, 0.5),
-            3px 18px 36px rgba(0, 0, 0, 0.4),
-            3px 24px 48px rgba(0, 0, 0, 0.25),
-            inset 1px 0 0 rgba(255, 255, 255, 0.6),
-            inset -1px 0 0 rgba(0, 0, 0, 0.1),
-            /* Dramatic outer shadow extending to the right */
-            12px 0 30px rgba(0, 0, 0, 0.85),
-            25px 0 50px rgba(0, 0, 0, 0.7),
-            35px 0 65px rgba(0, 0, 0, 0.5);
+            2px 5px 10px rgba(255, 191, 0, 0.6),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.5),
+            inset -1px 0 0 rgba(0, 0, 0, 0.05);
     }
     75% {
         transform: rotate(-1deg);
         box-shadow: 
-            -3px 8px 15px rgba(255, 191, 0, 0.8),
-            -2px 4px 8px rgba(0, 0, 0, 0.6),
-            -3px 12px 24px rgba(0, 0, 0, 0.5),
-            -3px 18px 36px rgba(0, 0, 0, 0.4),
-            -3px 24px 48px rgba(0, 0, 0, 0.25),
-            inset 1px 0 0 rgba(255, 255, 255, 0.4),
-            inset -1px 0 0 rgba(0, 0, 0, 0.3),
-            /* Dramatic outer shadow extending to the right */
-            8px 0 20px rgba(0, 0, 0, 0.85),
-            18px 0 40px rgba(0, 0, 0, 0.7),
-            28px 0 55px rgba(0, 0, 0, 0.5);
+            -2px 5px 10px rgba(255, 191, 0, 0.6),
+            0 2px 4px rgba(0, 0, 0, 0.3),
+            inset 1px 0 0 rgba(255, 255, 255, 0.3),
+            inset -1px 0 0 rgba(0, 0, 0, 0.15);
     }
 }
 
@@ -417,29 +374,6 @@ header h1 {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     border-radius: 0;
-    background: transparent; /* Make container transparent */
-    border: none;
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-    z-index: 1;
-    cursor: default;
-    
-    /* EXTREME VISIBLE outer shadow extending to the left - Applied to whole element */
-    filter: drop-shadow(-15px 0 25px rgba(255, 0, 0, 0.95)) 
-            drop-shadow(-30px 0 45px rgba(255, 0, 0, 0.85))
-            drop-shadow(-50px 0 70px rgba(255, 0, 0, 0.7));
-}
-
-/* Ribbon background with clip-path on pseudo-element so shadows aren't clipped */
-.work-badge.blocked::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     
     /* Clip path for vertical ribbon with square top and inverted V-point (fishtail/notch) at bottom */
     clip-path: polygon(
@@ -452,15 +386,25 @@ header h1 {
     
     /* Enhanced 3D gradient background */
     background: linear-gradient(to right, #ff6b6b 0%, #ee5a52 50%, #c92a2a 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.75rem;
+    border: none;
+    letter-spacing: 0.5px;
     
-    /* Inner shadows only - no outer shadows here */
+    /* Multi-layered shadows for 3D effect */
     box-shadow: 
-        0 6px 12px rgba(239, 68, 68, 0.6),
-        0 3px 6px rgba(0, 0, 0, 0.5),
-        inset 1px 0 0 rgba(255, 255, 255, 0.3),
-        inset -1px 0 0 rgba(0, 0, 0, 0.3);
+        0 4px 8px rgba(239, 68, 68, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        inset 1px 0 0 rgba(255, 255, 255, 0.2),
+        inset -1px 0 0 rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    z-index: 1;
     
-    z-index: -1;
+    /* Ribbon sway animation */
+    animation: ribbonSwayBlocked 3s ease-in-out infinite;
+    transform-origin: top center;
+    cursor: default;
 }
 
 .work-badge.win {
@@ -475,33 +419,6 @@ header h1 {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     border-radius: 0;
-    background: transparent; /* Make container transparent */
-    border: none;
-    color: #5a3e00;
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
-    z-index: 2;
-    cursor: default;
-    
-    /* EXTREME VISIBLE outer shadow extending to the right - Applied to whole element */
-    filter: drop-shadow(15px 0 25px rgba(255, 200, 0, 0.95)) 
-            drop-shadow(30px 0 45px rgba(255, 200, 0, 0.85))
-            drop-shadow(50px 0 70px rgba(255, 200, 0, 0.7));
-    
-    /* Ribbon sway animation */
-    animation: ribbonSwayWin 3.5s ease-in-out infinite;
-    transform-origin: top center;
-}
-
-/* Ribbon background with clip-path on pseudo-element so shadows aren't clipped */
-.work-badge.win::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     
     /* Clip path for vertical ribbon with square top and inverted V-point (fishtail/notch) at bottom */
     clip-path: polygon(
@@ -514,15 +431,25 @@ header h1 {
     
     /* Enhanced 3D gradient background with golden shine */
     background: linear-gradient(to right, #ffd93d 0%, #ffbf00 50%, #f39c12 100%);
+    color: #5a3e00;
+    font-weight: 600;
+    font-size: 0.75rem;
+    border: none;
+    letter-spacing: 0.5px;
     
-    /* Inner shadows only - no outer shadows here */
+    /* Multi-layered shadows for 3D effect */
     box-shadow: 
-        0 6px 12px rgba(255, 191, 0, 0.7),
-        0 3px 6px rgba(0, 0, 0, 0.5),
-        inset 1px 0 0 rgba(255, 255, 255, 0.5),
-        inset -1px 0 0 rgba(0, 0, 0, 0.2);
+        0 4px 8px rgba(255, 191, 0, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        inset 1px 0 0 rgba(255, 255, 255, 0.4),
+        inset -1px 0 0 rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+    z-index: 2;
     
-    z-index: -1;
+    /* Ribbon sway animation */
+    animation: ribbonSwayWin 3.5s ease-in-out infinite;
+    transform-origin: top center;
+    cursor: default;
 }
 
 .filter-controls {

@@ -121,7 +121,6 @@ header h1 {
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 6px;
-    cursor: pointer;
     font-size: 0.9rem;
     transition: background 0.2s;
     cursor: default;
@@ -137,7 +136,6 @@ header h1 {
     color: var(--text-primary);
     padding: 0.5rem 1rem;
     border-radius: 6px;
-    cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.2s;
     display: flex;
@@ -468,7 +466,6 @@ header h1 {
     background: var(--surface);
     color: var(--text-primary);
     font-size: 0.9rem;
-    cursor: pointer;
     cursor: default;
 }
 
@@ -529,13 +526,6 @@ header h1 {
     gap: 0.5rem;
     font-size: 0.9rem;
     color: var(--text-secondary);
-    cursor: default;
-}
-
-.issue-assignee {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
     cursor: default;
 }
 
@@ -637,7 +627,6 @@ header h1 {
     border: none;
     padding: 0.5rem 1.5rem;
     border-radius: 6px;
-    cursor: pointer;
     margin-top: 1rem;
     cursor: default;
 }

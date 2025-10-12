@@ -405,6 +405,8 @@ header h1 {
     animation: ribbonSwayBlocked 3s ease-in-out infinite;
     transform-origin: top center;
     cursor: default;
+    /* Added outline shadow following the clipped shape */
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35)) drop-shadow(0 2px 3px rgba(239,68,68,0.4));
 }
 
 .work-badge.win {
@@ -450,6 +452,8 @@ header h1 {
     animation: ribbonSwayWin 3.5s ease-in-out infinite;
     transform-origin: top center;
     cursor: default;
+    /* Added outline shadow following the clipped shape */
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35)) drop-shadow(0 2px 3px rgba(255,191,0,0.45));
 }
 
 .filter-controls {

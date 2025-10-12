@@ -310,32 +310,35 @@ header h1 {
     0%, 100% {
         transform: rotate(0deg);
         box-shadow: 
-            0 4px 8px rgba(239, 68, 68, 0.4),
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            0 6px 12px rgba(0, 0, 0, 0.25),
-            0 10px 20px rgba(0, 0, 0, 0.15),
-            inset 1px 0 0 rgba(255, 255, 255, 0.2),
-            inset -1px 0 0 rgba(0, 0, 0, 0.2);
+            0 6px 12px rgba(239, 68, 68, 0.6),
+            0 3px 6px rgba(0, 0, 0, 0.5),
+            0 10px 20px rgba(0, 0, 0, 0.4),
+            0 15px 30px rgba(0, 0, 0, 0.3),
+            0 20px 40px rgba(0, 0, 0, 0.2),
+            inset 1px 0 0 rgba(255, 255, 255, 0.3),
+            inset -1px 0 0 rgba(0, 0, 0, 0.3);
     }
     25% {
         transform: rotate(1deg);
         box-shadow: 
-            2px 5px 10px rgba(239, 68, 68, 0.5),
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            2px 8px 14px rgba(0, 0, 0, 0.3),
-            2px 12px 24px rgba(0, 0, 0, 0.2),
-            inset 1px 0 0 rgba(255, 255, 255, 0.25),
-            inset -1px 0 0 rgba(0, 0, 0, 0.15);
+            3px 8px 15px rgba(239, 68, 68, 0.7),
+            2px 4px 8px rgba(0, 0, 0, 0.6),
+            3px 12px 24px rgba(0, 0, 0, 0.5),
+            3px 18px 36px rgba(0, 0, 0, 0.4),
+            3px 24px 48px rgba(0, 0, 0, 0.25),
+            inset 1px 0 0 rgba(255, 255, 255, 0.4),
+            inset -1px 0 0 rgba(0, 0, 0, 0.2);
     }
     75% {
         transform: rotate(-1deg);
         box-shadow: 
-            -2px 5px 10px rgba(239, 68, 68, 0.5),
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            -2px 8px 14px rgba(0, 0, 0, 0.3),
-            -2px 12px 24px rgba(0, 0, 0, 0.2),
-            inset 1px 0 0 rgba(255, 255, 255, 0.15),
-            inset -1px 0 0 rgba(0, 0, 0, 0.25);
+            -3px 8px 15px rgba(239, 68, 68, 0.7),
+            -2px 4px 8px rgba(0, 0, 0, 0.6),
+            -3px 12px 24px rgba(0, 0, 0, 0.5),
+            -3px 18px 36px rgba(0, 0, 0, 0.4),
+            -3px 24px 48px rgba(0, 0, 0, 0.25),
+            inset 1px 0 0 rgba(255, 255, 255, 0.2),
+            inset -1px 0 0 rgba(0, 0, 0, 0.4);
     }
 }
 
@@ -344,32 +347,35 @@ header h1 {
     0%, 100% {
         transform: rotate(0deg);
         box-shadow: 
-            0 4px 8px rgba(255, 191, 0, 0.5),
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            0 6px 12px rgba(0, 0, 0, 0.25),
-            0 10px 20px rgba(0, 0, 0, 0.15),
-            inset 1px 0 0 rgba(255, 255, 255, 0.4),
-            inset -1px 0 0 rgba(0, 0, 0, 0.1);
+            0 6px 12px rgba(255, 191, 0, 0.7),
+            0 3px 6px rgba(0, 0, 0, 0.5),
+            0 10px 20px rgba(0, 0, 0, 0.4),
+            0 15px 30px rgba(0, 0, 0, 0.3),
+            0 20px 40px rgba(0, 0, 0, 0.2),
+            inset 1px 0 0 rgba(255, 255, 255, 0.5),
+            inset -1px 0 0 rgba(0, 0, 0, 0.2);
     }
     25% {
         transform: rotate(1deg);
         box-shadow: 
-            2px 5px 10px rgba(255, 191, 0, 0.6),
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            2px 8px 14px rgba(0, 0, 0, 0.3),
-            2px 12px 24px rgba(0, 0, 0, 0.2),
-            inset 1px 0 0 rgba(255, 255, 255, 0.5),
-            inset -1px 0 0 rgba(0, 0, 0, 0.05);
+            3px 8px 15px rgba(255, 191, 0, 0.8),
+            2px 4px 8px rgba(0, 0, 0, 0.6),
+            3px 12px 24px rgba(0, 0, 0, 0.5),
+            3px 18px 36px rgba(0, 0, 0, 0.4),
+            3px 24px 48px rgba(0, 0, 0, 0.25),
+            inset 1px 0 0 rgba(255, 255, 255, 0.6),
+            inset -1px 0 0 rgba(0, 0, 0, 0.1);
     }
     75% {
         transform: rotate(-1deg);
         box-shadow: 
-            -2px 5px 10px rgba(255, 191, 0, 0.6),
-            0 2px 4px rgba(0, 0, 0, 0.3),
-            -2px 8px 14px rgba(0, 0, 0, 0.3),
-            -2px 12px 24px rgba(0, 0, 0, 0.2),
-            inset 1px 0 0 rgba(255, 255, 255, 0.3),
-            inset -1px 0 0 rgba(0, 0, 0, 0.15);
+            -3px 8px 15px rgba(255, 191, 0, 0.8),
+            -2px 4px 8px rgba(0, 0, 0, 0.6),
+            -3px 12px 24px rgba(0, 0, 0, 0.5),
+            -3px 18px 36px rgba(0, 0, 0, 0.4),
+            -3px 24px 48px rgba(0, 0, 0, 0.25),
+            inset 1px 0 0 rgba(255, 255, 255, 0.4),
+            inset -1px 0 0 rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -404,15 +410,16 @@ header h1 {
     border: none;
     letter-spacing: 0.5px;
     
-    /* Multi-layered shadows for 3D effect and elevation */
+    /* Multi-layered shadows for strong 3D elevation effect */
     box-shadow: 
-        0 4px 8px rgba(239, 68, 68, 0.4),
-        0 2px 4px rgba(0, 0, 0, 0.3),
-        0 6px 12px rgba(0, 0, 0, 0.25),
-        0 10px 20px rgba(0, 0, 0, 0.15),
-        inset 1px 0 0 rgba(255, 255, 255, 0.2),
-        inset -1px 0 0 rgba(0, 0, 0, 0.2);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        0 6px 12px rgba(239, 68, 68, 0.6),
+        0 3px 6px rgba(0, 0, 0, 0.5),
+        0 10px 20px rgba(0, 0, 0, 0.4),
+        0 15px 30px rgba(0, 0, 0, 0.3),
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        inset 1px 0 0 rgba(255, 255, 255, 0.3),
+        inset -1px 0 0 rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
     z-index: 1;
     
     /* Ribbon sway animation */
@@ -451,15 +458,16 @@ header h1 {
     border: none;
     letter-spacing: 0.5px;
     
-    /* Multi-layered shadows for 3D effect and elevation */
+    /* Multi-layered shadows for strong 3D elevation effect */
     box-shadow: 
-        0 4px 8px rgba(255, 191, 0, 0.5),
-        0 2px 4px rgba(0, 0, 0, 0.3),
-        0 6px 12px rgba(0, 0, 0, 0.25),
-        0 10px 20px rgba(0, 0, 0, 0.15),
-        inset 1px 0 0 rgba(255, 255, 255, 0.4),
-        inset -1px 0 0 rgba(0, 0, 0, 0.1);
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+        0 6px 12px rgba(255, 191, 0, 0.7),
+        0 3px 6px rgba(0, 0, 0, 0.5),
+        0 10px 20px rgba(0, 0, 0, 0.4),
+        0 15px 30px rgba(0, 0, 0, 0.3),
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        inset 1px 0 0 rgba(255, 255, 255, 0.5),
+        inset -1px 0 0 rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     z-index: 2;
     
     /* Ribbon sway animation */

@@ -3,7 +3,7 @@
   <img src="docs/assets/img/dashboard.png" alt="Engineering Team Dashboard" width="128">
 </p>
 
-# Engineering Team Dashboard
+# IS Engineering Team Dashboard
 
 A beautiful, real-time dashboard for visualizing team capacity and work distribution based on GitHub Issues. Perfect for engineering managers to track what their team is working on at a glance.
 
@@ -15,20 +15,19 @@ A beautiful, real-time dashboard for visualizing team capacity and work distribu
 - **Win Highlighting**: Highlights high-value work items with gold badges
 - **Real-time Updates**: Automatically refreshes when issues are created, edited, closed, or assigned
 - **Date Filtering**: Filter issues by last updated date to focus on recent work (configured via TOML)
-- **Team Capacity Visualization**: See at-a-glance who's working on what with semi-transparent bar chart
+- **Team Capacity Visualization**: See at-a-glance who's working on what with bar chart
 - **Work Type Distribution**: Visualize projects vs enhancements vs other work with doughnut chart
-- **Interactive Workload Heatmap**: Bubble chart with semi-transparent colors and hover effects
+- **Interactive Workload Heatmap**: Visualize team workload intensity with bubble chart
 - **Name Mapping**: Map GitHub usernames to preferred display names
 - **Dark/Light Theme**: Toggle between themes with automatic system preference detection
 - **Manual Refresh**: Force data reload with cache-busting
 - **Filterable Issue List**: Filter by assignee, label, or state
-- **Hover Effects**: Team member cards with smooth raise and zoom animations
 
 ## 🚀 Quick Start
 
 This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
 
-**Live Dashboard**: `https://<your-org>.github.io/<your-repo>/`
+**Live Dashboard**: `https://literate-adventure-1ek48rr.pages.github.io/`
 
 ### Setup
 
@@ -68,14 +67,14 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
    # Special Status Labels - Can be combined with work types
    [status-labels]
    blocked = "blocked"   # Work needing manager intervention
-   win = "win"          # High value-add work
+   win = "win"           # High value-add work
 
    [colors]
-   project = "3b82f6"      # Blue (hex without #)
-   enhancement = "f59e0b"  # Orange
+   project = "02cecb"      # Teal
+   enhancement = "7209b7"  # Purple
    other = "6b7280"        # Gray
-   blocked = "ef4444"      # Red (indicator color)
-   win = "10b981"          # Green (indicator color)
+   blocked = "ef4444"      # Red (for blocked indicator)
+   win = "ffbf00"          # Gold (for win indicator)
    ```
 
 5. **Create and Assign Issues**:
@@ -83,7 +82,7 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
    - Add `project` or `enhancement` labels for categorization
    - Optionally add `blocked` label for blocked work
    - Optionally add `win` label for high-value work
-   - Issues without labels will appear under "Other" category
+   - Issues without labels or non-project/enhancement labels will appear under "Other" category
 
 ## 🔄 How It Works
 
@@ -94,7 +93,6 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
    - Fetches **all issues** (no label filtering) via GitHub API
    - Uses `since` parameter for date filtering
    - Paginates through all results (100 issues per page)
-   - Counts issues by category (project, enhancement, blocked, win)
    - Saves to `docs/data/issues.json`
    - Generates deployment summary with issue counts and stats
    - Deploys to GitHub Pages
@@ -105,8 +103,8 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
    - Categorizes issues by work type (project, enhancement, or other)
    - Handles multiple assignees with overlapping avatar display
    - Identifies blocked and win items
-   - Renders charts using Chart.js with semi-transparent colors
-   - Displays team member cards with hover effects and blocked/win indicators
+   - Renders charts using Chart.js
+   - Displays team member cards with blocked/win indicators
    - Shows filterable issue list with visual status badges
 
 ## 📊 Dashboard Components
@@ -139,31 +137,15 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
 **Right Column (Stacked)**:
 
 - **Team Capacity Overview**: Bar chart showing open issues per team member
-  - Semi-transparent bars (0.5 opacity) with solid borders
-  - Uses dynamic primary color from theme
-  - Shows preferred names from config
   
-- **Team Workload Heatmap**: Bubble chart visualization
-  - Semi-transparent bubbles (0.5 opacity) for modern design
-  - Bubble size represents workload (number of open issues)
-  - Color intensity indicates workload level:
-    - **Green**: Low workload (0-30% of max)
-    - **Orange**: Medium workload (30-60% of max)
-    - **Red**: High workload (60-100% of max)
-  - Team member names displayed at 45° angle
-  - Interactive tooltips with exact issue counts
-  - Optimized layout with proper padding (60px top, 40px sides) to prevent bubble clipping
-  - Y-axis range: -1.5 to 1.5 for balanced visualization
+- **Team Workload Heatmap**: Bubble chart visualization showing workload intensity by team member and work type
 
 ### Team Member Details
 
 - Individual cards for each team member with assigned issues
-- Avatar, preferred name, and open/closed issue counts
-- **Multiple assignees** displayed with overlapping avatars (when an issue has multiple assignees)
 - Work breakdown by type (Project, Enhancement, Other)
-- **Blocked work indicator** (red badge with ban icon, right-aligned)
-- **Win work indicator** (gold badge with trophy icon, right-aligned)
-- **Smooth hover effects**: Cards raise and zoom slightly on hover (300ms transition)
+- **Blocked work indicator** (red ribbon)
+- **Win work indicator** (gold ribbon)
 
 ### Issues List
 
@@ -171,8 +153,8 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
 - **Multiple assignees support**: Issues can have multiple assignees with overlapping avatar display
 - Assignee avatars with preferred names
 - All labels with original GitHub colors
-- **Visual blocked badge** (red "BLOCKED" text with ban icon)
-- **Visual win badge** (gold "WIN" text with trophy icon)
+- **Visual blocked badge**
+- **Visual win badge**
 - State indicator (open/closed)
 - Filterable by:
   - Team member (using preferred names) - matches any assignee
@@ -182,7 +164,7 @@ This dashboard is automatically deployed via GitHub Actions to GitHub Pages.
 ## 🛠️ Technology Stack
 
 - **Frontend**: Vanilla JavaScript, HTML5, CSS3
-- **Charts**: Chart.js 4.4.0 (with semi-transparent styling and animations)
+- **Charts**: Chart.js 4.4.0
 - **Icons**: Font Awesome 6.4.2
 - **Config Format**: TOML (parsed by dasel in GitHub Actions)
 - **Config Parser**: dasel (latest) for TOML parsing in workflow
@@ -222,7 +204,6 @@ These labels can be added to any issue:
 - `enhancement` + `win` = High-value enhancement
 - `project` + `blocked` + `win` = Blocked high-value project
 - No labels = Appears under "Other" category
-- Both `project` + `enhancement` = Appears under "Other" category
 
 ## 🎨 Theming
 
@@ -256,7 +237,7 @@ win = "win"            # High value-add work
 [colors]
 project = "02cecb"      # Teal
 enhancement = "7209b7"  # Purple
-other = "6b7280"        # Gray (for issues with both labels or no work type label)
+other = "6b7280"        # Gray (for issues with no label or no work type label)
 blocked = "ef4444"      # Red (for blocked indicator)
 win = "ffbf00"          # Gold (for win indicator)
 
@@ -308,19 +289,8 @@ Deployment typically takes 30-60 seconds.
 
 ## 🤝 Contributing
 
-1. Create issues with optional `project` or `enhancement` labels for categorization
-2. Assign issues to one or more team members (multiple assignees supported)
-3. Add `blocked` label when work is blocked
-4. Add `win` label for high-value work
-5. Dashboard updates automatically on issue changes
+Pull requests welcome!
 
 ## 📄 License
 
 This dashboard is for internal team use.
-
-## 🙋 Support
-
-For issues or questions about the dashboard:
-
-- Check the [GitHub Issues](../../issues)
-- Review the workflow runs in [Actions](../../actions)

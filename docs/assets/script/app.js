@@ -186,8 +186,8 @@ async function loadDashboardData() {
         updateSummaryCards();
         updateCharts();
         renderTeamMembers();
-        renderIssues(allIssues);
         updateFilterOptions();
+        filterIssues(); // Use filterIssues to respect default filter values
         
     } catch (error) {
         console.error('Error loading dashboard data:', error);
